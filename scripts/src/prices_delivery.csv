@@ -1,0 +1,586 @@
+Auction,Branch,Yard,Car fee,Motorcycle fee
+Copart,TX - Dallas,Houston,250,175
+Copart,TX - Longview,Houston,275,200
+IAA,San Antonio-South,Houston,250,175
+IAA,Baton Rouge,Houston,325,225
+IAA,Tulsa,Houston,500,300
+Copart,TX - El Paso,Houston,500,300
+Copart,NM - Albuquerque,Houston,550,325
+Copart,TX - Corpus Christi,Houston,275,200
+IAA,Dallas,Houston,250,175
+Copart,LA - New Orleans,Houston,400,250
+Copart,TX - Waco,Houston,250,175
+IAA,Houston-North,Houston,100,100
+Copart,TX - CrashedToys Dallas,Houston,250,175
+Copart,TX - Houston East,Houston,100,100
+Copart,TX - San Antonio,Houston,250,175
+Copart,TX - Dallas South,Houston,250,175
+Copart,TX - Austin,Houston,225,175
+IAA,Dallas/Ft Worth,Houston,250,175
+IAA,Corpus Christi,Houston,275,200
+Copart,OK - Oklahoma City,Houston,500,300
+Copart,LA - Baton Rouge,Houston,325,225
+IAA,McAllen,Houston,350,225
+IAA,Austin,Houston,225,175
+IAA,Fort Worth North,Houston,250,175
+IAA,Houston,Houston,100,100
+IAA,Houston South,Houston,125,125
+Copart,TX - Ft. Worth,Houston,250,175
+IAA,New Orleans East,Houston,400,250
+IAA,Oklahoma City,Houston,500,300
+IAA,Lubbock,Houston,400,275
+IAA,Lafayette,Houston,300,250
+Copart,TX - McAllen,Houston,350,225
+IAA,Longview,Houston,275,200
+Copart,TX - Lufkin,Houston,250,175
+IAA,El Paso,Houston,500,300
+Copart,TX - Andrews,Houston,350,250
+Copart,OK - Tulsa,Houston,500,300
+IAA,ACE - Carson,Los Angeles,200,200
+IAA,ACE - Perris,Los Angeles,225,200
+IAA,ADESA Birmingham,Savannah,350,225
+IAA,Akron-Canton,New York,500,300
+IAA,Albany,New York,250,175
+IAA,Altoona,New York,400,275
+IAA,Anaheim,Los Angeles,200,200
+IAA,Asheville,Savannah,350,225
+IAA,Ashland,Chicago,450,275
+IAA,Atlanta,Savannah,275,200
+IAA,Atlanta East,Savannah,300,200
+IAA,Atlanta North,Savannah,300,200
+Copart,GA - ATLANTA SOUTH,Savannah,300,200
+IAA,Avenel New Jersey,New York,125,125
+IAA,Baltimore,New York,300,200
+IAA,Birmingham,Savannah,400,250
+IAA,Boston - Shirley,New York,300,200
+IAA,Bowling Green,Chicago,375,250
+IAA,Bridgeport,New York,250,175
+IAA,Buckhannon,New York,600,350
+IAA,Buffalo,New York,450,275
+IAA,Burlington,New York,500,300
+IAA,Central New Jersey,New York,150,125
+IAA,Charleston,Savannah,275,200
+IAA,Charlotte,Savannah,350,225
+IAA,Chattanooga,Savannah,350,250
+IAA,Chicago-North,Chicago,125,125
+IAA,Chicago-South,Chicago,125,125
+IAA,Chicago-West,Chicago,125,125
+IAA,Cincinnati,New York,520,310
+IAA,Cincinnati South,New York,520,310
+IAA,Clearwater,Miami,250,250
+IAA,Cleveland,New York,500,300
+IAA,Colton,Los Angeles,225,200
+IAA,Columbia,Savannah,275,200
+IAA,Columbus,New York,500,300
+IAA,Concord,Savannah,350,225
+IAA,Culpeper,New York,350,225
+IAA,Davenport,Chicago,250,175
+IAA,Dayton,New York,500,300
+IAA,Denver,Chicago,550,325
+IAA,Denver East,Chicago,550,325
+IAA,Detroit,Chicago,375,250
+IAA,Dothan,Savannah,400,250
+IAA,Dundalk,New York,300,200
+IAA,East Bay,Los Angeles,375,300
+IAA,Erie,New York,450,300
+IAA,Fargo,Chicago,500,300
+IAA,Fayetteville,Chicago,500,325
+IAA,Flint,Chicago,400,250
+IAA,Fontana,Los Angeles,225,200
+IAA,Fort Myers,Miami,200,200
+IAA,Fort Pierce,Miami,200,175
+IAA,Fredericksburg South,New York,300,200
+IAA,Fremont,Los Angeles,375,290
+IAA,Fresno,Los Angeles,350,240
+IAA,Grand Rapids,Chicago,325,225
+IAA,Greensboro,Savannah,350,225
+IAA,Greenville,Savannah,250,175
+IAA,Grenada,Savannah,450,300
+IAA,Gulf Coast,Savannah,400,250
+IAA,Hartford,New York,220,160
+IAA,Hartford-South,New York,220,160
+IAA,High Desert,Los Angeles,300,200
+IAA,Honolulu,Los Angeles,1800,1500
+IAA,Huntsville,Savannah,350,225
+IAA,Indianapolis,Chicago,225,175
+IAA,Jackson,Savannah,400,275
+IAA,Jacksonville,Savannah,175,150
+IAA,Kansas City,Chicago,425,270
+IAA,Knoxville,Savannah,360,230
+IAA,Lafayette,Savannah,400,250
+IAA,Las Vegas,Los Angeles,450,300
+IAA,Laurel,New York,300,200
+IAA,Lexington,Savannah,275,200
+IAA,Lincoln,Chicago,250,200
+IAA,Little Rock,Chicago,500,325
+IAA,Los Angeles,Los Angeles,175,175
+IAA,Louisville,Chicago,350,225
+IAA,Louisville North,Chicago,350,225
+IAA,Macon,Savannah,250,175
+IAA,Manchester,New York,375,250
+IAA,Memphis,Savannah,550,325
+IAA,Metro DC,New York,300,200
+IAA,Miami,Miami,125,125
+IAA,Miami-North,Miami,125,125
+IAA,Milwaukee,Chicago,200,150
+IAA,Minneapolis/St. Paul,Chicago,350,225
+IAA,Nashville,Savannah,360,230
+IAA,New Castle,New York,250,175
+IAA,Newburgh,New York,185,140
+IAA,North Hollywood,Los Angeles,200,180
+IAA,Northern Virginia,New York,380,240
+IAA,Omaha,Chicago,400,250
+IAA,Orlando,Miami,225,225
+IAA,Orlando-North,Miami,225,225
+IAA,Paducah,Chicago,375,250
+IAA,Pensacola,Miami,350,350
+IAA,Philadelphia,New York,200,150
+IAA,Phoenix,Los Angeles,400,300
+IAA,Pittsburgh,New York,450,275
+IAA,Pittsburgh-North,New York,450,275
+IAA,Portage,Chicago,250,175
+IAA,Portland - Gorham,New York,450,275
+IAA,Providence,New York,325,225
+IAA,Pulaski,New York,450,275
+IAA,Raleigh,Savannah,350,225
+IAA,Reno,Los Angeles,500,400
+IAA,Richmond,New York,420,260
+IAA,Rochester,New York,380,250
+IAA,Sacramento,Los Angeles,375,290
+IAA,Salt Lake City,Chicago,750,450
+IAA,San Diego,Los Angeles,250,200
+IAA,Savannah,Savannah,100,100
+IAA,Scranton,New York,275,200
+IAA,Shady Spring,New York,500,325
+IAA,Shreveport,Houston,300,200
+IAA,Sioux Falls,Chicago,500,350
+IAA,South Bend,Chicago,250,175
+IAA,Southern New Jersey,New York,150,150
+IAA,Springfield,Chicago,450,275
+IAA,St. Louis,Chicago,300,200
+IAA,Suffolk,New York,400,275
+IAA,Syracuse,New York,300,200
+IAA,Tampa North,Miami,250,250
+IAA,Taunton,New York,300,200
+IAA,Templeton,New York,300,225
+IAA,Tidewater,New York,375,250
+IAA,Tifton,Savannah,250,175
+IAA,Tucson,Los Angeles,450,310
+IAA,Wichita,Chicago,500,300
+IAA,Wilmington,Savannah,350,225
+IAA,York Springs,New York,250,200
+Copart,NY - ALBANY,New York,250,175
+Copart,PA - ALTOONA,New York,400,275
+Copart,CA - Antelope,Los Angeles,400,300
+Copart,GA - ATLANTA EAST,Savannah,300,200
+Copart,GA - ATLANTA NORTH,Savannah,325,200
+Copart,GA - ATLANTA WEST,Savannah,300,200
+Copart,CA - Bakersfield,Los Angeles,350,225
+Copart,MD - BALTIMORE,New York,300,200
+Copart,AL - Birmingham,Savannah,400,250
+Copart,NY - Buffalo,New York,450,275
+Copart,NH - CANDIA,New York,350,225
+Copart,GA - CARTERSVILLE,Savannah,325,225
+Copart,PA - CHAMBERSBURG,New York,325,225
+Copart,WV - CHARLESTON,New York,500,350
+Copart,NC - CHINA GROVE,Savannah,350,225
+Copart,OH - CLEVELAND EAST,New York,500,300
+Copart,OH - CLEVELAND WEST,New York,500,300
+Copart,MO - COLUMBIA,Chicago,375,250
+Copart,SC - COLUMBIA,Savannah,275,200
+Copart,OH - COLUMBUS,New York,500,300
+Copart,MN - CRASHEDTOYS MINNEAPOLIS,Chicago,350,225
+Copart,VA - DANVILLE,New York,400,275
+Copart,IA - DAVENPORT,Chicago,250,175
+Copart,OH - DAYTON,New York,500,300
+Copart,CO - DENVER,Chicago,550,325
+Copart,CO - DENVER CENTRAL,Chicago,550,325
+Copart,CO - DENVER SOUTH,Chicago,550,325
+Copart,IA - DES MOINES,Chicago,300,200
+Copart,RI - EXETER,New York,350,225
+Copart,AR - Fayetteville,Chicago,500,325
+Copart,MI - FLINT,Chicago,400,250
+Copart,IN - FORT WAYNE,Chicago,250,200
+Copart,VA - Fredericksburg,New York,300,200
+Copart,CA - Fresno,Los Angeles,350,240
+Copart,FL - FT. PIERCE,Miami,200,175
+Copart,NJ - GLASSBORO EAST,New York,175,140
+Copart,NJ - Glassboro West,New York,175,140
+Copart,IN - HAMMOND,Chicago,125,125
+Copart,VA - HAMPTON,New York,400,250
+Copart,PA - HARRISBURG,New York,250,175
+Copart,CT - HARTFORD,New York,220,160
+Copart,CT - HARTFORD SPRINGFIELD,New York,220,160
+Copart,CA - Hayward,Los Angeles,375,290
+Copart,HI - HONOLULU,Los Angeles,1800,1500
+Copart,MI - IONIA,Chicago,375,250
+Copart,MS - Jackson,Savannah,400,275
+Copart,FL - JACKSONVILLE EAST,Savannah,175,150
+Copart,FL - JACKSONVILLE WEST,Savannah,175,150
+Copart,KS - KANSAS CITY,Chicago,425,270
+Copart,TN - KNOXVILLE,Savannah,360,230
+Copart,NV - LAS VEGAS,Los Angeles,450,300
+Copart,KY - LEXINGTON EAST,Chicago,375,250
+Copart,KY - LEXINGTON WEST,Chicago,375,250
+Copart,NE - LINCOLN,Chicago,450,275
+Copart,AR - LITTLE ROCK,Chicago,500,325
+Copart,CA - Long Beach,Los Angeles,175,150
+Copart,CA - Los Angeles,Los Angeles,175,175
+Copart,KY - LOUISVILLE,Chicago,350,225
+Copart,NC - LUMBERTON,Savannah,350,225
+Copart,ME - LYMAN,New York,450,275
+Copart,GA - Macon,Savannah,250,175
+Copart,WI - MADISON,Chicago,225,175
+Copart,NC - MEBANE,Savannah,350,225
+Copart,TN - MEMPHIS,Savannah,550,325
+Copart,FL - MIAMI CENTRAL,Miami,175,175
+Copart,FL - MIAMI NORTH,Miami,125,125
+Copart,FL - MIAMI SOUTH,Miami,125,125
+Copart,WI - MILWAUKEE,Chicago,200,150
+Copart,MN - MINNEAPOLIS,Chicago,350,225
+Copart,AL - Mobile,Savannah,350,225
+Copart,NC - MOCKSVILLE,Savannah,350,225
+Copart,AL - Montgomery,Savannah,360,230
+Copart,TN - NASHVILLE,Savannah,360,230
+Copart,NY - NEWBURGH,New York,185,140
+Copart,MA - NORTH BOSTON,New York,300,200
+Copart,SC - NORTH CHARLESTON,Savannah,250,175
+Copart,FL - OCALA,Miami,275,275
+Copart,FL - ORLANDO NORTH,Miami,225,225
+Copart,FL - ORLANDO SOUTH,Miami,225,225
+Copart,IL - PEORIA,Chicago,225,175
+Copart,PA - PHILADELPHIA,New York,200,150
+Copart,PA - Philadelphia East,New York,200,150
+Copart,AZ - Phoenix,Los Angeles,400,300
+Copart,PA - PITTSBURGH EAST,New York,450,275
+Copart,PA - PITTSBURGH NORTH,New York,450,275
+Copart,PA - PITTSBURGH SOUTH,New York,450,275
+Copart,FL - PUNTA GORDA,Miami,200,200
+Copart,NC - RALEIGH,Savannah,350,225
+Copart,CA - Rancho Cucamonga,Los Angeles,225,200
+Copart,NV - RENO,Los Angeles,500,400
+Copart,VA - RICHMOND,New York,420,260
+Copart,VA - RICHMOND EAST,New York,420,260
+Copart,NY - ROCHESTER,New York,380,250
+Copart,CA - Sacramento,Los Angeles,375,290
+Copart,UT - SALT LAKE CITY,Chicago,750,450
+Copart,CA - SAN BERNARDINO,Los Angeles,225,200
+Copart,CA - San Diego,Los Angeles,250,200
+Copart,CA - San Jose,Los Angeles,375,300
+Copart,GA - SAVANNAH,Savannah,100,100
+Copart,PA - SCRANTON,New York,275,200
+Copart,DE - SEAFORD,New York,300,200
+Copart,LA - SHREVEPORT,Houston,300,200
+Copart,MO - SIKESTON,Chicago,450,275
+Copart,CA - So Sacramento,Los Angeles,400,300
+Copart,NJ - SOMERVILLE,New York,150,125
+Copart,MA - SOUTH BOSTON,New York,300,200
+Copart,IL - Southern Illinois,Chicago,250,175
+Copart,SC - SPARTANBURG,Savannah,250,175
+Copart,MO - SPRINGFIELD,Chicago,450,275
+Copart,MN - ST. CLOUD,Chicago,400,275
+Copart,MO - ST. LOUIS,Chicago,300,200
+Copart,CA - Sun Valley,Los Angeles,200,200
+Copart,NY - SYRACUSE,New York,300,200
+Copart,FL - TALLAHASSEE,Savannah,325,325
+Copart,FL - TAMPA SOUTH,Miami,250,250
+Copart,AL - TANNER,Savannah,350,250
+Copart,GA - TIFTON,Savannah,250,175
+Copart,NJ - TRENTON,New York,175,140
+Copart,AZ - Tucson,Los Angeles,450,310
+Copart,CA - Vallejo,Los Angeles,400,300
+Copart,CA - Van Nuys,Los Angeles,200,200
+Copart,KY - WALTON,Chicago,350,225
+Copart,DC - WASHINGTON DC,New York,275,200
+Copart,FL - WEST PALM BEACH,Miami,160,160
+Copart,MA - WEST WARREN,New York,275,200
+Copart,IL - WHEELING,Chicago,125,125
+Copart,KS - WICHITA,Chicago,475,300
+Copart,PA - YORK HAVEN,New York,350,225
+Copart,WY - Casper,Chicago,1000,550
+Copart,UT - Ogden,Chicago,750,425
+Copart,NC - Raleigh North,Savannah,350,225
+IAA,Long Island,New York,200,150
+Copart,IN - Cicero,Chicago,225,175
+Copart,NY - Long Island,New York,200,150
+IAA,Los Angeles South,Los Angeles,175,175
+IAA,Boise,Chicago,1000,550
+IAA,Englishtown,New York,150,125
+Copart,ON - Toronto,Montreal,400,0
+Copart,TX - Amarillo,Houston,450,275
+Copart,WI - Milwaukee North,Chicago,200,150
+IAA,Billings,Chicago,900,475
+IAA,Amarillo,Houston,450,275
+Copart,NC - Gastonia,Savannah,350,225
+Copart,PA - Pittsburgh West,New York,450,275
+Copart,CA - Martinez,Los Angeles,375,290
+Copart,FL - Jacksonville North,Savannah,175,150
+Copart,CO - Colorado Springs,Chicago,550,325
+IAA,Missoula,Chicago,900,500
+IAA,Abilene,Houston,350,225
+IAA,Western Colorado,Chicago,1000,650
+IAA,Casper,Chicago,1000,550
+Copart,MT - BIllings,Chicago,900,475
+IAA,Albuquerque,Houston,550,325
+Copart,MI - Kincheloe,Chicago,600,400
+Copart,IN - Dyer,Chicago,125,125
+Copart,MD - Baltimore East,New York,300,200
+Copart,AL - Dothan,Savannah,400,250
+Copart,CA - Redding,Los Angeles,550,425
+Copart,CA - Adelanto,Los Angeles,275,225
+Manheim,Manheim Dallas,Houston,275,0
+Copart,MT - Helena,Chicago,1000,600
+IAA,Roanoke,New York,450,300
+Copart,TX - Abilene,Houston,350,225
+Copart,NC - Concord,Savannah,350,225
+IAA,Atlanta South,Savannah,300,200
+Copart,ND - Bismarck,Chicago,650,400
+Copart,ID - Boise,Chicago,1000,550
+Manheim,MANHEIM MINNEAPOLIS,Chicago,350,0
+Copart,AL - Mobile South,Savannah,350,225
+Copart,GA - Fairburn,Savannah,250,175
+IAA,Sayreville,New York,150,0
+Copart,COPART NEWBURGH SUBLOT,New York,185,150
+IAA,Colorado Springs,Chicago,550,325
+Manheim,Manheim Jacksonville,Savannah,150,0
+Manheim,MANHEIM BIRMINGHAM,Savannah,400,250
+Manheim,Manheim Fredericksburg,New York,300,200
+Manheim,Manheim New Jersey,New York,0,0
+Manheim,Manheim Chicago,Chicago,125,125
+Manheim,Manheim California,Los Angeles,0,0
+Manheim,Manheim Pennsylvania,New York,0,0
+Manheim,Manheim St. Pete,Miami,0,0
+Manheim,Manheim Philadelphia,New York,200,150
+Manheim,Manheim Tampa,Miami,250,250
+Copart,WI - Madison South,Chicago,225,175
+Manheim,Manheim Detroit,Chicago,375,0
+Manheim,Manheim Rochester,New York,380,250
+Manheim,Manheim Fort Lauderdale,Miami,120,0
+Manheim,Manheim New England,New York,0,0
+Copart,STATEN ISLAND SUBLOT,New York,200,150
+Manheim,Manheim San Francisco Bay,Los Angeles,0,0
+Manheim,Manheim Nashville,Savannah,350,0
+Copart,KY - EARLINGTON,Chicago,375,275
+Copart,ELK RIVER SUBLOT,Chicago,375,0
+IAA,Permian Basin,Houston,400,250
+Copart,PA - PHILADELPHIA EAST-SUBLOT,New York,200,150
+IAA,Port Murray,New York,225,175
+IAA,Caseyville,Chicago,250,0
+Manheim,MANHEIM HARRISONBURG,New York,380,0
+Copart,COPART - 053B,New York,325,225
+Copart,WHITE MARSH SUBLOT,New York,300,200
+IAA,Roseville Sublot,Chicago,375,0
+IAA,IAA CAT Long Island - West,New York,200,150
+IAA,Indianapolis South,Chicago,300,0
+IAA,Vermillion - North Ford Lot,New York,500,0
+Copart,MA - FREETOWN,New York,350,225
+Copart,COPART FRIDLEY SUBLOT,Chicago,350,0
+IAA,Miami-North 2 Offsite,Miami,125,125
+IAA,ACE - Perris 2,Los Angeles,225,200
+Copart,CT - HARTFORD SOUTH,New York,220,160
+Copart,KS - KANSAS CITY EAST,Chicago,425,0
+Copart,COPART JOBSTOWN SUBLOT,New York,175,150
+IAA,Des Moines,Chicago,300,200
+Copart,MI - LANSING,Chicago,400,250
+Copart,IL - Chicago North,Chicago,125,125
+Copart,IL - Chicago South,Chicago,125,125
+Copart,IN - Indianapolis,Chicago,225,175
+Copart,MI - DETROIT,Chicago,375,250
+Copart,MN - MINNEAPOLIS NORTH,Chicago,350,225
+Copart,TX - HOUSTON,Houston,100,100
+Copart,WI - APPLETON,Chicago,250,175
+IAA,Appleton,Chicago,250,175
+Copart,COPART SUBLOT @ Modesto,Los Angeles,0,0
+Manheim,Manheim St. Louis,Chicago,300,200
+Copart,IA - DES MOINES @ METRO,Chicago,300,200
+Copart,MD - BALTIMORE White Marsh sublot,New York,300,200
+IAA,Tampa,Miami,200,250
+IAA,Detroit B & G Lot,Chicago,375,250
+Copart,HAMMER SUBLOT,Los Angeles,0,0
+IAA,Clewiston CAT Yard,Miami,0,0
+Copart,SC - COLUMBIA @ PINE PLAIN LOT,Savannah,275,0
+Copart,FL - PUNTA GORDA SOUTH,Miami,200,200
+Copart,CT - Hartford @ North Sublot,New York,220,160
+Copart,YARD 81 SUBLOT,Chicago,125,0
+IAA,Minneapolis South,Chicago,350,225
+Copart,Copart Bridgeton Sublot,Chicago,0,0
+Copart,WI - MILWAUKEE SOUTH,Chicago,200,150
+Copart,GA - AUGUSTA,Savannah,250,175
+IAA,West Palm Beach,Miami,160,160
+IAA,Riverside Off Site,Los Angeles,200,0
+IAA,Fontana Off Site (San Bernardino),Los Angeles,225,200
+Copart,Jefferson GA Sublot,Savannah,300,0
+Copart,SOUTH GASTON SUBLOT,Savannah,275,200
+Copart,SD - RAPID CITY,Chicago,600,400
+IAA,Elkton,New York,300,200
+IAA,Fort Wayne,Chicago,250,200
+IAA,High Point,Savannah,350,225
+IAA,Kansas City East,Chicago,0,0
+IAA,New Orleans,Houston,0,0
+Copart,Copart Vallejo Sublot,Los Angeles,400,0
+Copart,Copart - Sublot Yd 6,Los Angeles,400,275
+Copart,MOORE SUBLOT,Houston,500,300
+Copart,CA - Mentone,Los Angeles,250,200
+Copart,COPART LANCASTER,Los Angeles,200,200
+Copart,Birmingham North,Savannah,400,250
+IAA,IAA Roseville,Chicago,350,225
+Copart,Lucky Sublot,Los Angeles,450,300
+Copart,Copart Alden Sublot,New York,450,0
+Copart,TN - Memphis,Chicago,450,325
+Copart,COPART - HAM LAKE SUB LOT,Chicago,350,225
+IAA,Santa Clarita,Los Angeles,250,225
+Copart,ME - Lyman @ Scarborough,New York,450,275
+Copart,GA - Savannah @ Metter Sublot,Savannah,0,0
+Copart,ME - Windham,New York,400,275
+Copart,MS - Grenada,Savannah,450,0
+Copart,Copart Clayton Sublot,Los Angeles,0,0
+Copart,SPRINGFIELD SUB LOT,Chicago,450,0
+IAA,IAA Stimmel Road,New York,500,300
+Copart,Northeast Auto Transport,New York,525,325
+IAA,Long Island - Rice Court,New York,200,150
+IAA,Long Island - East Yard,New York,200,150
+Copart,CA - So Sacramento @ Modesto,Los Angeles,400,0
+Copart,Yard 17 KS City Sublot,Chicago,0,0
+IAA,IAA Rice,Chicago,350,225
+Copart,Mission Rock Road,Los Angeles,0,0
+Copart,Devil's Bowl Raceway,New York,450,0
+IAA,Pensacola,Savannah,300,250
+Copart,FRUITLAND SUBLOT,New York,375,0
+IAA,Indy Minnesota Street,Chicago,200,0
+IAA,Long Island - North Yard,New York,200,175
+Copart,OUTER LOOP SUBLOT,Chicago,0,0
+Copart,MA - FREETOWN,Savannah,550,0
+IAA,Clearwater,Savannah,300,0
+IAA,IAA St Paul- North,Chicago,350,0
+IAA,South Bend @ Sample St Offsite,Chicago,0,0
+Copart,AMSTERDAM SUBLOT,New York,250,0
+Copart,ME - Lyman @ Gray,New York,0,0
+IAA,Monticello-672,New York,250,0
+IAA,Long Island - Green Yard,New York,0,0
+Copart,ON - LONDON,Montreal,500,0
+IAA,6522 Old 41A Hwy_Tampa FL,Miami,0,0
+Copart,CLEWISTON SUBLOT,Miami,150,0
+Copart,YD329 Sublot,New York,0,0
+Copart,YD335 - Thonotosassa,Miami,250,0
+IAA,Staten Island Branch 673,New York,200,150
+Copart,VT - Rutland,New York,500,325
+Copart,MEBANE SUBLOT,Savannah,0,0
+Copart,OH - AKRON,New York,500,300
+Manheim,Manheim Orlando,Miami,0,0
+Copart,MI - Wayland,Chicago,300,200
+Manheim,Manheim Statesville,Savannah,0,0
+Manheim,Manheim Georgia,Savannah,250,0
+Manheim,Manheim Riverside,Los Angeles,0,0
+Manheim,Manheim Milwaukee,Chicago,0,0
+Manheim,Manheim Texas Hobby,Houston,100,0
+Copart,NV - LAS VEGAS WEST,Los Angeles,450,300
+Manheim,Manheim Nevada,Los Angeles,0,0
+Manheim,Manheim Oceanside,Los Angeles,0,0
+Manheim,Manheim North Carolina,Savannah,0,0
+Manheim,Manheim New York,New York,0,0
+Manheim,Manheim Phoenix,Los Angeles,300,0
+Manheim,Manheim Denver,Chicago,500,0
+Copart,CO - COLORADO SPRINGS,Houston,600,400
+Copart,TAYLR,Houston,250,175
+Manheim,Manheim Fresno,Los Angeles,350,240
+Manheim,Manheim Utah,Chicago,0,0
+Copart,FL - TAMPA SOUTH,Savannah,300,250
+IAA,Seattle,Chicago,1100,600
+Copart,FL - MIAMI SOUTH,Savannah,300,250
+Manheim,"Houston, TX 77031",Houston,100,100
+Manheim,Manheim Mississippi,Savannah,0,0
+Manheim,Manheim NY Metro Skyline,New York,0,0
+Manheim,Manheim Fort Lauderdale,Savannah,250,0
+Manheim,Manheim Central Florida,Miami,200,0
+Manheim,Manheim Portland,Chicago,900,0
+Manheim,Manheim Atlanta,Savannah,250,0
+Copart,COPART SUBLOT YD 168,Chicago,125,0
+Copart,Fairfield Sublot,Los Angeles,0,0
+Manheim,Manheim Kansas City,Chicago,325,0
+Copart,Auction Lane Sublot,Los Angeles,375,290
+Copart,FL - ORLANDO NORTH,Savannah,275,200
+Copart,PORTLAND SUBLOT,Houston,400,0
+IAA,Little Rock,Houston,450,0
+Copart,AR - LITTLE ROCK,Houston,450,0
+IAA,IAA St Cloud,Chicago,0,0
+Manheim,Manheim Darlington,Savannah,300,0
+Copart,KS - KANSAS CITY,Houston,425,0
+Copart,AZ - PHOENIX NORTH,Los Angeles,400,300
+Copart,Cudahy Yard 39 Sublot,Chicago,200,0
+Manheim,Manheim St. Pete,Savannah,275,0
+Manheim,Manheim Palm Beach,Miami,0,0
+Manheim,Manheim San Antonio,Houston,225,0
+Copart,YD335 - Thonotosassa,Savannah,250,0
+Manheim,"Zephyrhills, FL",Savannah,250,0
+Copart,WA - PASCO,Chicago,1100,0
+Manheim,Manheim Southern California,Los Angeles,0,0
+IAA,Phoenix,Houston,525,0
+Copart,FL - WEST PALM BEACH,Savannah,275,0
+IAA,Austin North,Houston,225,175
+Copart,AB - EDMONTON,Montreal,0,0
+Copart,FL - PUNTA GORDA SOUTH,Savannah,275,150
+Copart,OK - Tulsa,Chicago,500,500
+IAA,Stockton,Los Angeles,400,0
+Copart,NS - HALIFAX,Montreal,0,0
+Copart,QC - MONTREAL,Montreal,0,0
+Manheim,Norwalk Auto Auction,Los Angeles,175,0
+Copart,LA - New Orleans,Savannah,400,0
+IAA,Eugene AUX Lot,Los Angeles,600,0
+Copart,ON - OTTAWA,Montreal,0,0
+Manheim,Manheim St Pete,Savannah,275,0
+Manheim,Manheim Pensacola,Savannah,0,0
+IAA,IAA Santa Clarita,Los Angeles,225,200
+Copart,Dunn Sublot,Chicago,0,0
+Copart,MULBERRY SUBLOT,Miami,0,0
+IAA,Orlando-North,Savannah,300,0
+IAA,Provo,Chicago,775,500
+Copart,COPART OKEECHOBEE,Miami,200,175
+Copart,COPART OKEECHOBEE,Savannah,325,250
+IAA,Clewiston CAT Yard,Savannah,250,200
+Copart,CA - NAPA,Los Angeles,400,275
+Copart,FL - MIAMI CENTRAL,Savannah,0,0
+Copart,Laurel Sublot,New York,300,200
+IAA,St. Cloud,Chicago,400,275
+Copart,ON - COOKSTOWN,Montreal,0,0
+Copart,WA - NORTH SEATTLE,Chicago,1100,600
+Copart,Yard 349 Sublot,Los Angeles,675,400
+Copart,WA - SPOKANE,Chicago,1100,650
+Copart,YARD 377 SPANAWAY SUBLOT,Chicago,0,0
+IAA,Portland,Los Angeles,650,450
+Copart,Coopersburg,New York,0,0
+Copart,OR - PORTLAND SOUTH,Los Angeles,650,450
+Copart,OR - PORTLAND NORTH,Los Angeles,650,450
+Copart,WA - GRAHAM,Chicago,0,0
+IAA,Spokane,Chicago,0,0
+Copart,CA - VAN NUYS,New MIAMI,200,200
+IAA,Tucson,New MIAMI,450,310
+Copart,CA - Sun Valley,New MIAMI,200,200
+IAA,North Hollywood,New MIAMI,200,180
+Copart,CA - San Diego,New MIAMI,250,200
+Copart,CA - SACRAMENTO,New MIAMI,400,300
+Copart,Auction Lane Sublot,New MIAMI,400,300
+IAA,Las Vegas,New MIAMI,450,300
+Copart,COPART LANCASTER,New MIAMI,200,200
+IAA,Phoenix,New MIAMI,400,300
+Copart,VERTIA ST SUB LOT,Savannah,0,0
+Copart,CA - BAKERSFIELD,New MIAMI,350,225
+IAA,ACE - Perris,New MIAMI,225,200
+Copart,AZ - TUCSON,New MIAMI,450,310
+Copart,White Plains Sublot,New York,0,0
+IAA,Los Angeles South,New MIAMI,175,175
+IAA,Santa Clarita,New MIAMI,250,225
+Copart,CA - MARTINEZ,New MIAMI,375,290
+Copart,AZ - PHOENIX,New MIAMI,400,300
+Copart,CA - SAN BERNARDINO,New MIAMI,225,200
+Copart,CA - LONG BEACH,New MIAMI,175,150
+Copart,CA - ADELANTO,New MIAMI,275,225
+Copart,AZ - PHOENIX NORTH,New MIAMI,400,300
+Copart,CA - SAN JOSE,New MIAMI,375,300
+Copart,CA - ANTELOPE,New MIAMI,400,300
+Copart,CA - VALLEJO,New MIAMI,400,300
+Copart,Yard 132 Arlington Sublot,Chicago,0,0
+Copart,COPART HEIGHTS SUBLOT,Chicago,0,0
+IAA,Omaha South,Chicago,400,250
+Copart,Napa Sublot,Los Angeles,0,0
+Copart,Coplay,New York,0,0
+IAA,Lake City,Savannah,0,0

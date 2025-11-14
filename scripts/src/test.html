@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VINAS Transporto Kainų Skaičiuoklė</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+      text-shadow:
+                1px 1px 0px black,
+                -1px -1px 0px black,
+                1px -1px 0px black,
+                -1px 1px 0px black;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 0px;
+      background: #111;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Logo as Background */
+    .logo-bg {
+      position: absolute;
+      top: 25px;
+      right: 19px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      opacity: 0.04; /* Makes it semi-transparent */
+      background: url('https://scontent.fplq1-2.fna.fbcdn.net/v/t39.30808-1/305396247_409885837917292_6269877668284403726_n.png?_nc_cat=104&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=dPZMMViBXg0Q7kNvgHisUqV&_nc_zt=24&_nc_ht=scontent.fplq1-2.fna&_nc_gid=Ad4H3KkNRmDfAgaEu82BR7H&oh=00_AYC2waTXEnQis5trvmPur8o4ABc_1OzZIlG5FIlo89YkOA&oe=67A57CB3') no-repeat center;
+      background-size: cover;
+      pointer-events: none;
+    }
+    .buttons label {
+      display: inline-block;
+      width: 25%;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 10px;
+      background: #333;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .input-group {
+      margin: 10px 0;
+      text-align: left;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .input-group input,
+.input-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background: #222;
+  color: #fff;
+  box-sizing: border-box; /* Add this line */
+}
+
+    .result {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .result p {
+      margin: 5px 0;
+      font-family: monospace;
+    }
+    /* Style for the Skaičiuoti button */
+    .calculate-btn {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 10px;
+      background: #444;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    .calculate-btn:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-bg"></div>
+    <form id="calcForm">
+      <!-- Vehicle Type Selection -->
+      <div class="buttons">
+        <label><input type="radio" name="vehicle" value="car" checked> Lengvoji</label>
+        <label><input type="radio" name="vehicle" value="motorcycle"> Motociklas</label>
+        <label><input type="radio" name="vehicle" value="truck"> Visureigis</label>
+      </div>
+
+      <!-- Auction Selector -->
+      <div class="input-group">
+        <label for="auction">🚀AUKCIONO SVETAINĖ🚀</label>
+        <select id="auction" name="auction" onchange="populateLocations()">
+          <option value="copart">COPART</option>
+          <option value="iaai">IAAI</option>
+        </select>
+      </div>
+      <!-- Vehicle Price (in USD) -->
+      <div class="input-group">
+        <label for="price">💲AUTOMOBILIO KAINA (USD)💲</label>
+        <input type="number" id="price" name="price" value="0">
+      </div>
+      <!-- Paėmimo vieta: Dropdown populated based on auction type -->
+      <div class="input-group">
+        <label for="location">📦PAĖMIMO VIETA📦</label>
+        <select id="location" name="location">
+          <!-- Options populated dynamically -->
+        </select>
+      </div>
+      <!-- Gabenimas į: Fixed list -->
+      <div class="input-group">
+        <label for="shipping">🚢GABENTI Į🚢</label>
+        <select id="shipping" name="shipping">
+          <option value="Klaipėda">Klaipėda</option>
+          <option value="Rotterdam">Rotterdam</option>
+          <option value="Bremerhaven">Bremerhaven</option>
+        </select>
+      </div>
+
+      <!-- Skaičiuoti Button -->
+      <button type="button" class="calculate-btn" onclick="calculateTotal()">Skaičiuoti</button>
+
+      <!-- Results Section -->
+      <div class="result">
+        <p>TRANSPORTO PRIEMONĖS KAINA        <output id="vehiclePrice">-€</output></p>
+        <p>AUKCIONO MOKESČIAI                <output id="auctionFees">-€</output></p>
+        <p>TRALO MOKESTIS                    <output id="transportFees">-€</output></p>
+        <p>KROVINIŲ GABENIMAS JŪRA Į <span id="destination">Klaipėda</span>        <output id="shippingFees">-€</output></p>
+        <p>MUITAS / PVM                      <output id="vatFees">-€</output></p>
+        <p>KROVOS DARBAI IR DEKLARANTAS       250€</p>
+        <p><strong>❗️ PRELIMINARI BENDRA SUMA: <output id="totalSum">- €</output> ❗️</strong></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    /********* Data Definitions *********/
+    const rate = 0.892857; // Exchange rate: 1 USD ≈ 0.9647 EUR
+
+    // Local Transport Fees mapping (only a few keys shown for brevity)
+          const localTransport = {
+      copart: {
+        "TX - Austin": { yard: "Houston", car: 225, motorcycle: 175 },
+        "CA - Antelope": { yard: "Los Angeles", car: 400, motorcycle: 300 },
+        "GA - ATLANTA EAST": { yard: "Savannah", car: 300, motorcycle: 200 },
+        "GA - ATLANTA NORTH": { yard: "Savannah", car: 325, motorcycle: 200 },
+        "GA - ATLANTA WEST": { yard: "Savannah", car: 300, motorcycle: 200 },
+		"NM - Albuquerque": { yard: "Houston", car: 550, motorcycle: 325 },
+        "Auction Lane Sublot": { yard: "Los Angeles", car: 375, motorcycle: 290 },
+        "CA - Bakersfield": { yard: "Los Angeles", car: 350, motorcycle: 225 },
+        "MD - BALTIMORE": { yard: "New York", car: 300, motorcycle: 200 },
+		"LA - Baton Rouge": { yard: "Houston", car: 325, motorcycle: 225 },
+        "AL - Birmingham": { yard: "Savannah", car: 400, motorcycle: 250 },
+        "NY - Buffalo": { yard: "New York", car: 450, motorcycle: 275 },
+        "NH - CANDIA": { yard: "New York", car: 350, motorcycle: 225 },
+        "WY - Casper": { yard: "Chicago", car: 1000, motorcycle: 550 },
+        "GA - CARTERSVILLE": { yard: "Savannah", car: 325, motorcycle: 225 },
+        "PA - CHAMBERSBURG": { yard: "New York", car: 325, motorcycle: 225 },
+        "WV - CHARLESTON": { yard: "New York", car: 500, motorcycle: 350 },
+        "NC - CHINA GROVE": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "OH - CLEVELAND EAST": { yard: "New York", car: 500, motorcycle: 300 },
+        "OH - CLEVELAND WEST": { yard: "New York", car: 500, motorcycle: 300 },
+        "MO - COLUMBIA": { yard: "Chicago", car: 375, motorcycle: 250 },
+        "SC - COLUMBIA": { yard: "Savannah", car: 275, motorcycle: 200 },
+        "OH - COLUMBUS": { yard: "New York", car: 500, motorcycle: 300 },
+        "IN - Cicero": { yard: "Chicago", car: 225, motorcycle: 175 },
+		"TX - Corpus Christi": { yard: "Houston", car: 275, motorcycle: 200 },
+		"TX - CrashedToys Dallas": { yard: "Houston", car: 250, motorcycle: 175 },
+        "MN - CRASHEDTOYS MINNEAPOLIS": { yard: "Chicago", car: 350, motorcycle: 225 },
+        "COPART OKEECHOBEE (6)": { yard: "Savannah", car: 325, motorcycle: 250 },
+        "COPART OKEECHOBEE (5)": { yard: "Miami", car: 200, motorcycle: 175 },
+        "Copart NEWBURGH SUBLOT": { yard: "New York", car: 185, motorcycle: 150 },
+        "COPART SUBLOT @ Modesto (2)": { yard: "Los Angeles", car: 0, motorcycle: 0 },
+        "Copart Bridgeton Sublot (3)": { yard: "Chicago", car: 0, motorcycle: 0 },
+        "COPART JOBSTOWN SUBLOT (3)": { yard: "New York", car: 175, motorcycle: 150 },
+        "COPART FRIDLEY SUBLOT (3)": { yard: "Chicago", car: 350, motorcycle: 0 },
+        "Copart Alden Sublot (2)": { yard: "New York", car: 450, motorcycle: 0 },
+        "Copart Clayton Sublot (2)": { yard: "Los Angeles", car: 0, motorcycle: 0 },
+        "COPART - HAM LAKE SUB LOT (2)": { yard: "Chicago", car: 350, motorcycle: 225 },
+        "Copart Vallejo Sublot": { yard: "Los Angeles", car: 400, motorcycle: 0 },
+        "COPART LANCASTER": { yard: "Los Angeles", car: 200, motorcycle: 0 },
+        "COPART OKEECHOBEE (4)": { yard: "Savannah", car: 325, motorcycle: 250 },
+        "COPART OKEECHOBEE (3)": { yard: "Miami", car: 200, motorcycle: 175 },
+        "Copart Bridgeton Sublot (2)": { yard: "Chicago", car: 0, motorcycle: 0 },
+        "COPART JOBSTOWN SUBLOT (2)": { yard: "New York", car: 175, motorcycle: 150 },
+        "COPART FRIDLEY SUBLOT (2)": { yard: "Chicago", car: 350, motorcycle: 0 },
+        "COPART - 053B": { yard: "New York", car: 325, motorcycle: 225 },
+        "COPART SUBLOT YD 168": { yard: "Chicago", car: 125, motorcycle: 0 },
+        "COPART OKEECHOBEE (2)": { yard: "Savannah", car: 325, motorcycle: 250 },
+        "COPART OKEECHOBEE": { yard: "Miami", car: 200, motorcycle: 175 },
+        "Copart Bridgeton Sublot": { yard: "Chicago", car: 0, motorcycle: 0 },
+        "Copart Clayton Sublot": { yard: "Los Angeles", car: 0, motorcycle: 0 },
+        "COPART - HAM LAKE SUB LOT": { yard: "Chicago", car: 350, motorcycle: 225 },
+        "Copart Alden Sublot": { yard: "New York", car: 450, motorcycle: 0 },
+        "COPART JOBSTOWN SUBLOT": { yard: "New York", car: 175, motorcycle: 150 },
+        "COPART SUBLOT @ Modesto": { yard: "Los Angeles", car: 0, motorcycle: 0 },
+        "COPART NEWBURGH SUBLOT": { yard: "New York", car: 185, motorcycle: 150 },
+        "COPART FRIDLEY SUBLOT": { yard: "Chicago", car: 350, motorcycle: 0 },
+		"TX - Dallas": { yard: "Houston", car: 250, motorcycle: 175 },
+		"TX - Dallas South": { yard: "Houston", car: 250, motorcycle: 175 },
+		"VA - DANVILLE": { yard: "New York", car: 400, motorcycle: 275 },
+		"IA - DAVENPORT": { yard: "Chicago", car: 250, motorcycle: 175 },
+		"OH - DAYTON": { yard: "New York", car: 500, motorcycle: 300 },
+		"CO - DENVER": { yard: "Chicago", car: 550, motorcycle: 325 },
+		"CO - DENVER CENTRAL": { yard: "Chicago", car: 550, motorcycle: 325 },
+		"CO - DENVER SOUTH": { yard: "Chicago", car: 550, motorcycle: 325 },
+		"IA - DES MOINES": { yard: "Chicago", car: 300, motorcycle: 200 },
+		"OR - EUGENE": { yard: "Seattle", car: 425, motorcycle: 350 },
+		"TX - El Paso": { yard: "Houston", car: 500, motorcycle: 300 },
+		"RI - EXETER": { yard: "New York", car: 350, motorcycle: 225 },
+		"AR - Fayetteville": { yard: "Chicago", car: 500, motorcycle: 325 },
+		"MI - FLINT": { yard: "Chicago", car: 400, motorcycle: 250 },
+		"IN - FORT WAYNE": { yard: "Chicago", car: 250, motorcycle: 200 },
+		"TX - Ft. Worth": { yard: "Houston", car: 250, motorcycle: 175 },
+		"VA - HAMPTON": { yard: "New York", car: 400, motorcycle: 250 },
+		"PA - HARRISBURG": { yard: "New York", car: 250, motorcycle: 175 },
+		"CT - HARTFORD": { yard: "New York", car: 220, motorcycle: 160 },
+		"CT - HARTFORD SPRINGFIELD": { yard: "New York", car: 220, motorcycle: 160 },
+		"CA - Hayward": { yard: "Los Angeles", car: 375, motorcycle: 290 },
+		"HI - HONOLULU": { yard: "Los Angeles", car: 1800, motorcycle: 1500 },
+		"TX - Houston East": { yard: "Houston", car: 100, motorcycle: 100 },
+		"MI - IONIA": { yard: "Chicago", car: 375, motorcycle: 250 },
+		"MS - Jackson": { yard: "Savannah", car: 400, motorcycle: 275 },
+		"FL - JACKSONVILLE EAST": { yard: "Savannah", car: 175, motorcycle: 150 },
+		"FL - JACKSONVILLE WEST": { yard: "Savannah", car: 175, motorcycle: 150 },
+		"KS - KANSAS CITY": { yard: "Chicago", car: 425, motorcycle: 270 },
+        "IA - DES MOINES @ METRO": { yard: "Chicago", car: 300, motorcycle: 200 },
+        "TN - KNOXVILLE": { yard: "Savannah", car: 360, motorcycle: 230 },
+        "NV - LAS VEGAS": { yard: "Los Angeles", car: 450, motorcycle: 300 },
+        "KY - LEXINGTON EAST": { yard: "Chicago", car: 375, motorcycle: 250 },
+        "KY - LEXINGTON WEST": { yard: "Chicago", car: 375, motorcycle: 250 },
+        "NE - LINCOLN": { yard: "Chicago", car: 450, motorcycle: 275 },
+		"TX - Longview": { yard: "Houston", car: 275, motorcycle: 200 },
+        "AR - Little Rock": { yard: "Chicago", car: 500, motorcycle: 325 },
+        "CA - Long Beach": { yard: "Los Angeles", car: 175, motorcycle: 150 },
+        "NY - Long Island": { yard: "New York", car: 200, motorcycle: 150 },
+        "CA - Los Angeles": { yard: "Los Angeles", car: 175, motorcycle: 175 },
+        "Los Angeles South": { yard: "Los Angeles", car: 175, motorcycle: 175 },
+        "KY - LOUISVILLE": { yard: "Chicago", car: 350, motorcycle: 225 },
+        "NC - LUMBERTON": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "ME - LYMAN": { yard: "New York", car: 450, motorcycle: 275 },
+        "GA - Macon": { yard: "Savannah", car: 250, motorcycle: 175 },
+        "WI - MADISON": { yard: "Chicago", car: 225, motorcycle: 175 },
+        "NC - MEBANE": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "TN - MEMPHIS": { yard: "Savannah", car: 550, motorcycle: 325 },
+        "WI - Madison South": { yard: "Chicago", car: 225, motorcycle: 175 },
+        "FL - MIAMI CENTRAL": { yard: "Miami", car: 175, motorcycle: 175 },
+        "FL - MIAMI NORTH": { yard: "Miami", car: 125, motorcycle: 125 },
+        "FL - MIAMI SOUTH": { yard: "Miami", car: 125, motorcycle: 125 },
+        "WI - MILWAUKEE": { yard: "Chicago", car: 200, motorcycle: 150 },
+        "MN - MINNEAPOLIS": { yard: "Chicago", car: 350, motorcycle: 225 },
+        "AL - Mobile": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "NC - MOCKSVILLE": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "AL - Montgomery": { yard: "Savannah", car: 360, motorcycle: 230 },
+        "TN - NASHVILLE": { yard: "Savannah", car: 360, motorcycle: 230 },
+        "NY - NEWBURGH": { yard: "New York", car: 185, motorcycle: 140 },
+		"LA - New Orleans": { yard: "Houston", car: 400, motorcycle: 250 },
+        "MA - NORTH BOSTON": { yard: "New York", car: 300, motorcycle: 200 },
+        "SC - NORTH CHARLESTON": { yard: "Savannah", car: 250, motorcycle: 175 },
+        "WA - NORTH SEATTLE": { yard: "Seattle", car: 240, motorcycle: 220 },
+		"OK - Oklahoma City": { yard: "Houston", car: 500, motorcycle: 300 },
+        "FL - OCALA": { yard: "Miami", car: 275, motorcycle: 275 },
+        "UT - Ogden": { yard: "Chicago", car: 750, motorcycle: 425 },
+        "FL - ORLANDO NORTH": { yard: "Miami", car: 225, motorcycle: 225 },
+        "FL - ORLANDO SOUTH": { yard: "Miami", car: 225, motorcycle: 225 },
+        "WA - PASCO": { yard: "Seattle", car: 400, motorcycle: 325 },
+        "IL - PEORIA": { yard: "Chicago", car: 225, motorcycle: 175 },
+        "PA - PHILADELPHIA": { yard: "New York", car: 200, motorcycle: 150 },
+        "PA - Philadelphia East": { yard: "New York", car: 200, motorcycle: 150 },
+        "AZ - Phoenix": { yard: "Los Angeles", car: 400, motorcycle: 300 },
+        "PORTLAND SUBLOT": { yard: "Houston", car: 400, motorcycle: 0 },
+        "PA - PITTSBURGH EAST": { yard: "New York", car: 450, motorcycle: 275 },
+        "PA - PITTSBURGH NORTH": { yard: "New York", car: 450, motorcycle: 275 },
+        "PA - PITTSBURGH SOUTH": { yard: "New York", car: 450, motorcycle: 275 },
+        "OR - PORTLAND NORTH": { yard: "Seattle", car: 325, motorcycle: 260 },
+        "OR - PORTLAND SOUTH": { yard: "Seattle", car: 325, motorcycle: 260 },
+        "FL - PUNTA GORDA": { yard: "Miami", car: 200, motorcycle: 200 },
+        "NC - RALEIGH": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "NC - Raleigh North": { yard: "Savannah", car: 350, motorcycle: 225 },
+        "CA - Rancho Cucamonga": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+        "NV - RENO": { yard: "Los Angeles", car: 500, motorcycle: 400 },
+        "VA - RICHMOND": { yard: "New York", car: 420, motorcycle: 260 },
+        "VA - RICHMOND EAST": { yard: "New York", car: 420, motorcycle: 260 },
+        "NY - ROCHESTER": { yard: "New York", car: 380, motorcycle: 250 },
+        "CA - Sacramento": { yard: "Los Angeles", car: 375, motorcycle: 290 },
+        "UT - SALT LAKE CITY": { yard: "Chicago", car: 750, motorcycle: 450 },
+        "CA - SAN BERNARDINO": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+        "CA - San Diego": { yard: "Los Angeles", car: 250, motorcycle: 200 },
+        "CA - San Jose": { yard: "Los Angeles", car: 375, motorcycle: 300 },
+        "TX - San Antonio": { yard: "Houston", car: 250, motorcycle: 175 },
+        "GA - SAVANNAH": { yard: "Savannah", car: 100, motorcycle: 100 },
+        "PA - SCRANTON": { yard: "New York", car: 275, motorcycle: 200 },
+        "DE - SEAFORD": { yard: "New York", car: 300, motorcycle: 200 },
+        "LA - SHREVEPORT": { yard: "Houston", car: 300, motorcycle: 200 },
+        "MO - SIKESTON": { yard: "Chicago", car: 450, motorcycle: 275 },
+        "CA - So Sacramento": { yard: "Los Angeles", car: 400, motorcycle: 300 },
+        "NJ - SOMERVILLE": { yard: "New York", car: 150, motorcycle: 125 },
+        "MA - SOUTH BOSTON": { yard: "New York", car: 300, motorcycle: 200 },
+        "IL - Southern Illinois": { yard: "Chicago", car: 250, motorcycle: 175 },
+        "SC - SPARTANBURG": { yard: "Savannah", car: 250, motorcycle: 175 },
+        "WA - SPOKANE": { yard: "Seattle", car: 375, motorcycle: 325 },
+        "MO - SPRINGFIELD": { yard: "Chicago", car: 450, motorcycle: 275 },
+        "MN - ST. CLOUD": { yard: "Chicago", car: 400, motorcycle: 275 },
+        "MO - ST. LOUIS": { yard: "Chicago", car: 300, motorcycle: 200 },
+        "CA - Sun Valley": { yard: "Los Angeles", car: 200, motorcycle: 200 },
+        "NY - SYRACUSE": { yard: "New York", car: 300, motorcycle: 200 },
+        "FL - TALLAHASSEE": { yard: "Savannah", car: 325, motorcycle: 325 },
+        "FL - TAMPA SOUTH": { yard: "Miami", car: 250, motorcycle: 250 },
+        "AL - TANNER": { yard: "Savannah", car: 350, motorcycle: 250 },
+        "GA - TIFTON": { yard: "Savannah", car: 250, motorcycle: 175 },
+        "NJ - TRENTON": { yard: "New York", car: 175, motorcycle: 140 },
+        "AZ - Tucson": { yard: "Los Angeles", car: 450, motorcycle: 310 },
+        "CA - Vallejo": { yard: "Los Angeles", car: 400, motorcycle: 300 },
+        "CA - Van Nuys": { yard: "Los Angeles", car: 200, motorcycle: 200 },
+        "KY - WALTON": { yard: "Chicago", car: 350, motorcycle: 225 },
+		"TX - Waco": { yard: "Houston", car: 250, motorcycle: 175 },
+        "DC - WASHINGTON DC": { yard: "New York", car: 275, motorcycle: 200 },
+        "FL - WEST PALM BEACH": { yard: "Miami", car: 160, motorcycle: 160 },
+        "MA - WEST WARREN": { yard: "New York", car: 275, motorcycle: 200 },
+        "IL - WHEELING": { yard: "Chicago", car: 125, motorcycle: 125 },
+        "KS - WICHITA": { yard: "Chicago", car: 475, motorcycle: 300 },
+        "WHITE MARSH SUBLOT": { yard: "New York", car: 300, motorcycle: 200 },
+        "PA - YORK HAVEN": { yard: "New York", car: 350, motorcycle: 225 },
+		"YARD 81 SUBLOT": { yard: "Chicago", car: 125, motorcycle: 0 }
+      },
+      iaai: {
+"Abilene": { yard: "Houston", car: 350, motorcycle: 225 },
+"ACE - Carson": { yard: "Los Angeles", car: 200, motorcycle: 200 },
+"ACE - Perris": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+"ACE - Perris 2": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+"ADESA Birmingham": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Akron-Canton": { yard: "New York", car: 500, motorcycle: 300 },
+"Albany": { yard: "New York", car: 250, motorcycle: 175 },
+"Altoona": { yard: "New York", car: 400, motorcycle: 275 },
+"Anaheim": { yard: "Los Angeles", car: 200, motorcycle: 200 },
+"Anchorage": { yard: "Seattle", car: 2300, motorcycle: 1800 },
+"Amarillo": { yard: "Houston", car: 450, motorcycle: 275 },
+"Asheville": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Ashland": { yard: "Chicago", car: 450, motorcycle: 275 },
+"Atlanta": { yard: "Savannah", car: 275, motorcycle: 200 },
+"Atlanta East": { yard: "Savannah", car: 300, motorcycle: 200 },
+"Atlanta North": { yard: "Savannah", car: 300, motorcycle: 200 },
+"Avenel New Jersey": { yard: "New York", car: 125, motorcycle: 125 },
+"Baltimore": { yard: "New York", car: 300, motorcycle: 200 },
+"Baton Rouge": { yard: "Houston", car: 325, motorcycle: 225 },
+"Billings": { yard: "Chicago", car: 900, motorcycle: 475 },
+"Birmingham": { yard: "Savannah", car: 400, motorcycle: 250 },
+"Boise": { yard: "Chicago", car: 1000, motorcycle: 550 },
+"Boston - Shirley": { yard: "New York", car: 300, motorcycle: 200 },
+"Bowling Green": { yard: "Chicago", car: 375, motorcycle: 250 },
+"Bridgeport": { yard: "New York", car: 250, motorcycle: 175 },
+"Buckhannon": { yard: "New York", car: 600, motorcycle: 350 },
+"Buffalo": { yard: "New York", car: 450, motorcycle: 275 },
+"Burlington": { yard: "New York", car: 500, motorcycle: 300 },
+"Caseyville": { yard: "Chicago", car: 250, motorcycle: 0 },
+"Casper": { yard: "Chicago", car: 1000, motorcycle: 550 },
+"Central New Jersey": { yard: "New York", car: 150, motorcycle: 125 },
+"Charleston": { yard: "Savannah", car: 275, motorcycle: 200 },
+"Charlotte": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Chattanooga": { yard: "Savannah", car: 350, motorcycle: 250 },
+"Chicago-North": { yard: "Chicago", car: 125, motorcycle: 125 },
+"Chicago-South": { yard: "Chicago", car: 125, motorcycle: 125 },
+"Chicago-West": { yard: "Chicago", car: 125, motorcycle: 125 },
+"Cincinnati": { yard: "New York", car: 520, motorcycle: 310 },
+"Cincinnati South": { yard: "New York", car: 520, motorcycle: 310 },
+"Clearwater": { yard: "Miami", car: 250, motorcycle: 250 },
+"Clewiston CAT Yard": { yard: "Miami", car: 250, motorcycle: 200 },
+"Clewiston CAT Yard (2)": { yard: "Savannah", car: 250, motorcycle: 200 },
+"Cleveland": { yard: "New York", car: 500, motorcycle: 300 },
+"Colton": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+"Columbia": { yard: "Savannah", car: 275, motorcycle: 200 },
+"Columbus": { yard: "New York", car: 500, motorcycle: 300 },
+"Concord": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Corpus Christi": { yard: "Houston", car: 275, motorcycle: 200 },
+"Culpeper": { yard: "New York", car: 350, motorcycle: 225 },
+"Dallas": { yard: "Houston", car: 250, motorcycle: 175 },
+"Dallas/Ft Worth": { yard: "Houston", car: 250, motorcycle: 175 },
+"Davenport": { yard: "Chicago", car: 250, motorcycle: 175 },
+"Dayton": { yard: "New York", car: 500, motorcycle: 300 },
+"Denver": { yard: "Chicago", car: 550, motorcycle: 325 },
+"Denver East": { yard: "Chicago", car: 550, motorcycle: 325 },
+"Des Moines": { yard: "Chicago", car: 300, motorcycle: 200 },
+"Detroit": { yard: "Chicago", car: 375, motorcycle: 250 },
+"Detroit B & G Lot": { yard: "Chicago", car: 375, motorcycle: 250 },
+"Dothan": { yard: "Savannah", car: 400, motorcycle: 250 },
+"Dundalk": { yard: "New York", car: 300, motorcycle: 200 },
+"East Bay": { yard: "Los Angeles", car: 375, motorcycle: 300 },
+"El Paso": { yard: "Houston", car: 500, motorcycle: 300 },
+"Englishtown": { yard: "New York", car: 150, motorcycle: 125 },
+"Erie": { yard: "New York", car: 450, motorcycle: 300 },
+"Eugene": { yard: "Seattle", car: 425, motorcycle: 350 },
+"Eugene AUX Lot": { yard: "Los Angeles", car: 600, motorcycle: 0 },
+"Fargo": { yard: "Chicago", car: 500, motorcycle: 300 },
+"Fayetteville": { yard: "Chicago", car: 500, motorcycle: 325 },
+"Flint": { yard: "Chicago", car: 400, motorcycle: 250 },
+"Fontana": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+"Fort Myers": { yard: "Miami", car: 200, motorcycle: 200 },
+"Fort Pierce": { yard: "Miami", car: 200, motorcycle: 175 },
+"Fredericksburg South": { yard: "New York", car: 300, motorcycle: 200 },
+"Fremont": { yard: "Los Angeles", car: 375, motorcycle: 290 },
+"Fresno": { yard: "Los Angeles", car: 350, motorcycle: 240 },
+"Fruitland Sublot": { yard: "New York", car: 375, motorcycle: 0 },
+"Grand Rapids": { yard: "Chicago", car: 325, motorcycle: 225 },
+"Greensboro": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Greenville": { yard: "Savannah", car: 250, motorcycle: 175 },
+"Grenada": { yard: "Savannah", car: 450, motorcycle: 300 },
+"Gulf Coast": { yard: "Savannah", car: 400, motorcycle: 250 },
+"Hartford": { yard: "New York", car: 220, motorcycle: 160 },
+"Hartford-South": { yard: "New York", car: 220, motorcycle: 160 },
+"High Desert": { yard: "Los Angeles", car: 300, motorcycle: 200 },
+"Honolulu": { yard: "Los Angeles", car: 1800, motorcycle: 1500 },
+"Houston-North": { yard: "Houston", car: 100, motorcycle: 100 },
+"Huntsville": { yard: "Savannah", car: 350, motorcycle: 225 },
+"IAA CAT Long Island - West": { yard: "New York", car: 200, motorcycle: 150 },
+"IAA Rice": { yard: "Chicago", car: 350, motorcycle: 225 },
+"IAA Santa Clarita": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+"IAA Santa Clarita (2)": { yard: "Los Angeles", car: 225, motorcycle: 200 },
+"IAA St Paul- North": { yard: "Chicago", car: 350, motorcycle: 0 },
+"IAA St Paul- North (2)": { yard: "Chicago", car: 350, motorcycle: 0 },
+"Indianapolis": { yard: "Chicago", car: 225, motorcycle: 175 },
+"Indianapolis South": { yard: "Chicago", car: 300, motorcycle: 0 },
+"Indy Minnesota Street": { yard: "Chicago", car: 200, motorcycle: 0 },
+"Jackson": { yard: "Savannah", car: 400, motorcycle: 275 },
+"Jacksonville": { yard: "Savannah", car: 175, motorcycle: 150 },
+"Kansas City": { yard: "Chicago", car: 425, motorcycle: 270 },
+"Knoxville": { yard: "Savannah", car: 360, motorcycle: 230 },
+"Laurel": { yard: "New York", car: 300, motorcycle: 200 },
+"Lafayette": { yard: "Houston", car: 300, motorcycle: 250 },
+"Las Vegas": { yard: "Los Angeles", car: 450, motorcycle: 300 },
+"Lexington": { yard: "Savannah", car: 275, motorcycle: 200 },
+"Lincoln": { yard: "Chicago", car: 250, motorcycle: 200 },
+"Little Rock": { yard: "Chicago", car: 500, motorcycle: 325 },
+"Long Island": { yard: "New York", car: 200, motorcycle: 150 },
+"Long Island - East Yard": { yard: "New York", car: 200, motorcycle: 150 },
+"Long Island - East Yard (2)": { yard: "New York", car: 200, motorcycle: 150 },
+"Long Island - North Yard": { yard: "New York", car: 200, motorcycle: 175 },
+"Longview": { yard: "Houston", car: 275, motorcycle: 200 },
+"Los Angeles": { yard: "Los Angeles", car: 175, motorcycle: 175 },
+"Los Angeles South": { yard: "Los Angeles", car: 175, motorcycle: 175 },
+"Louisville": { yard: "Chicago", car: 350, motorcycle: 225 },
+"Louisville North": { yard: "Chicago", car: 350, motorcycle: 225 },
+"Lubbock": { yard: "Houston", car: 400, motorcycle: 275 },
+"Macon": { yard: "Savannah", car: 250, motorcycle: 175 },
+"Manchester": { yard: "New York", car: 375, motorcycle: 250 },
+"Memphis": { yard: "Savannah", car: 550, motorcycle: 325 },
+"Metro DC": { yard: "New York", car: 300, motorcycle: 200 },
+"Miami": { yard: "Miami", car: 125, motorcycle: 125 },
+"Miami-North": { yard: "Miami", car: 125, motorcycle: 125 },
+"Miami-North 2 Offsite": { yard: "Miami", car: 125, motorcycle: 125 },
+"Milwaukee": { yard: "Chicago", car: 200, motorcycle: 150 },
+"Minneapolis/St. Paul": { yard: "Chicago", car: 350, motorcycle: 225 },
+"Missoula": { yard: "Chicago", car: 900, motorcycle: 500 },
+"Nashville": { yard: "Savannah", car: 360, motorcycle: 230 },
+"New Castle": { yard: "New York", car: 250, motorcycle: 175 },
+"New Orleans East": { yard: "Houston", car: 400, motorcycle: 250 },
+"Newburgh": { yard: "New York", car: 185, motorcycle: 140 },
+"North Hollywood": { yard: "Los Angeles", car: 200, motorcycle: 180 },
+"Northern Virginia": { yard: "New York", car: 380, motorcycle: 240 },
+"Oklahoma City": { yard: "Houston", car: 500, motorcycle: 300 },
+"Omaha": { yard: "Chicago", car: 400, motorcycle: 250 },
+"Orlando": { yard: "Miami", car: 225, motorcycle: 225 },
+"Orlando-North": { yard: "Miami", car: 225, motorcycle: 225 },
+"Orlando-North": { yard: "Savannah", car: 300, motorcycle: 0 },
+"Orlando-North (2)": { yard: "Savannah", car: 300, motorcycle: 0 },
+"Outer Loop Sublot": { yard: "Chicago", car: 0, motorcycle: 0 },
+"Paducah": { yard: "Chicago", car: 375, motorcycle: 250 },
+"Pensacola": { yard: "Miami", car: 350, motorcycle: 350 },
+"Pensacola": { yard: "Savannah", car: 300, motorcycle: 250 },
+"Pensacola (2)": { yard: "Savannah", car: 300, motorcycle: 250 },
+"Permian Basin": { yard: "Houston", car: 400, motorcycle: 250 },
+"Philadelphia": { yard: "New York", car: 200, motorcycle: 150 },
+"Phoenix": { yard: "Los Angeles", car: 400, motorcycle: 300 },
+"Pittsburgh": { yard: "New York", car: 450, motorcycle: 275 },
+"Pittsburgh-North": { yard: "New York", car: 450, motorcycle: 275 },
+"Port Murray": { yard: "New York", car: 225, motorcycle: 175 },
+"Portage": { yard: "Chicago", car: 250, motorcycle: 175 },
+"Portland": { yard: "Seattle", car: 325, motorcycle: 260 },
+"Portland - Gorham": { yard: "New York", car: 450, motorcycle: 275 },
+"Portland West": { yard: "Seattle", car: 325, motorcycle: 260 },
+"Provo": { yard: "Chicago", car: 775, motorcycle: 500 },
+"Provo (2)": { yard: "Chicago", car: 775, motorcycle: 500 },
+"Providence": { yard: "New York", car: 325, motorcycle: 225 },
+"Puyallup": { yard: "Seattle", car: 200, motorcycle: 0 },
+"Pulaski": { yard: "New York", car: 450, motorcycle: 275 },
+"Raleigh": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Reno": { yard: "Los Angeles", car: 500, motorcycle: 400 },
+"Richmond": { yard: "New York", car: 420, motorcycle: 260 },
+"Roanoke": { yard: "New York", car: 450, motorcycle: 300 },
+"Rochester": { yard: "New York", car: 380, motorcycle: 250 },
+"Roseville Sublot": { yard: "Chicago", car: 375, motorcycle: 0 },
+"Sacramento": { yard: "Los Angeles", car: 375, motorcycle: 290 },
+"Salt Lake City": { yard: "Chicago", car: 750, motorcycle: 450 },
+"San Antonio-South": { yard: "Houston", car: 250, motorcycle: 175 },
+"San Diego": { yard: "Los Angeles", car: 250, motorcycle: 200 },
+"Savannah": { yard: "Savannah", car: 100, motorcycle: 100 },
+"Scranton": { yard: "New York", car: 275, motorcycle: 200 },
+"Seattle": { yard: "Seattle", car: 1000, motorcycle: 200 },
+"Shady Spring": { yard: "New York", car: 500, motorcycle: 325 },
+"Shreveport": { yard: "Houston", car: 300, motorcycle: 200 },
+"Sioux Falls": { yard: "Chicago", car: 500, motorcycle: 350 },
+"South Bend": { yard: "Chicago", car: 250, motorcycle: 175 },
+"South Bend @ Sample St Offsite": { yard: "Chicago", car: 0, motorcycle: 0 },
+"South Bend @ Sample St Offsite (2)": { yard: "Chicago", car: 0, motorcycle: 0 },
+"Southern New Jersey": { yard: "New York", car: 150, motorcycle: 150 },
+"Spokane": { yard: "Seattle", car: 375, motorcycle: 325 },
+"Springfield": { yard: "Chicago", car: 450, motorcycle: 275 },
+"St. Louis": { yard: "Chicago", car: 300, motorcycle: 200 },
+"Stockton": { yard: "Los Angeles", car: 400, motorcycle: 0 },
+"Suffolk": { yard: "New York", car: 400, motorcycle: 275 },
+"Syracuse": { yard: "New York", car: 300, motorcycle: 200 },
+"Tampa North": { yard: "Miami", car: 250, motorcycle: 250 },
+"Taunton": { yard: "New York", car: 300, motorcycle: 200 },
+"Templeton": { yard: "New York", car: 300, motorcycle: 225 },
+"Tidewater": { yard: "New York", car: 375, motorcycle: 250 },
+"Tifton": { yard: "Savannah", car: 250, motorcycle: 175 },
+"Tucson": { yard: "Los Angeles", car: 450, motorcycle: 310 },
+"Tulsa": { yard: "Houston", car: 500, motorcycle: 300 },
+"Vermillion - North Ford Lot": { yard: "New York", car: 500, motorcycle: 0 },
+"Wichita": { yard: "Chicago", car: 500, motorcycle: 300 },
+"Wilmington": { yard: "Savannah", car: 350, motorcycle: 225 },
+"Western Colorado": { yard: "Chicago", car: 1000, motorcycle: 650 },
+"York Springs": { yard: "New York", car: 250, motorcycle: 200 }
+      }
+    };
+
+    // International Shipping Fees mapping (from your document)
+    // Key format: "yard_destination"
+   // International Shipping Fees mapping (from your document)
+// Key format: "yard_destination"
+const shippingMapping = {
+  "Houston_Klaipėda": { car: 700, motorcycle: 700 },
+  "Houston_Rotterdam": { car: 600, motorcycle: 350 },
+  "Seattle_Bremerhaven": { car: 1500, motorcycle: 500 },
+  "Houston_Bremerhaven": { car: 600, motorcycle: 350 },
+  "Los Angeles_Bremerhaven": { car: 1000, motorcycle: 450 },
+  "Miami_Bremerhaven": { car: 600, motorcycle: 350 },
+  "New York_Bremerhaven": { car: 450, motorcycle: 350 },
+  "Savannah_Bremerhaven": { car: 450, motorcycle: 350 },
+  "Los Angeles_Klaipėda": { car: 1100, motorcycle: 450 },
+  "Miami_Klaipėda": { car: 650, motorcycle: 350 },
+  "New Jersey_Klaipėda": { car: 550, motorcycle: 350 },
+  "New York_Klaipėda": { car: 550, motorcycle: 350 },
+  "Savannah_Klaipėda": { car: 550, motorcycle: 350 },
+  "Seattle_Klaipėda": { car: 1500, motorcycle: 500 },
+  // Added missing key:
+  "Chicago_Klaipėda": { car: 775, motorcycle: 350 },
+  "Chicago_Rotterdam": { car: 550, motorcycle: 350 },
+  "Los Angeles_Rotterdam": { car: 1000, motorcycle: 450 },
+  "Miami_Rotterdam": { car: 600, motorcycle: 350 },
+  "New York_Rotterdam": { car: 450, motorcycle: 350 },
+  "Savannah_Rotterdam": { car: 450, motorcycle: 350 },
+  "Seattle_Rotterdam": { car: 1500, motorcycle: 500 }
+};
+
+
+    // Copart Secured Payment Fees table (in USD)
+    const copartSecuredFees = [
+      { min: 0, max: 49.99, fee: 25 },
+      { min: 50, max: 99.99, fee: 45 },
+      { min: 100, max: 199.99, fee: 80 },
+      { min: 200, max: 299.99, fee: 130 },
+      { min: 300, max: 349.99, fee: 137.50 },
+      { min: 350, max: 399.99, fee: 145 },
+      { min: 400, max: 449.99, fee: 175 },
+      { min: 450, max: 499.99, fee: 185 },
+      { min: 500, max: 549.99, fee: 205 },
+      { min: 550, max: 599.99, fee: 210 },
+      { min: 600, max: 699.99, fee: 240 },
+      { min: 700, max: 799.99, fee: 270 },
+      { min: 800, max: 899.99, fee: 295 },
+      { min: 900, max: 999.99, fee: 320 },
+      { min: 1000, max: 1199.99, fee: 375 },
+      { min: 1200, max: 1299.99, fee: 395 },
+      { min: 1300, max: 1399.99, fee: 410 },
+      { min: 1400, max: 1499.99, fee: 430 },
+      { min: 1500, max: 1599.99, fee: 445 },
+      { min: 1600, max: 1699.99, fee: 465 },
+      { min: 1700, max: 1799.99, fee: 485 },
+      { min: 1800, max: 1999.99, fee: 510 },
+      { min: 2000, max: 2399.99, fee: 535 },
+      { min: 2400, max: 2499.99, fee: 570 },
+      { min: 2500, max: 2999.99, fee: 610 },
+      { min: 3000, max: 3499.99, fee: 655 },
+      { min: 3500, max: 3999.99, fee: 705 },
+      { min: 4000, max: 4499.99, fee: 725 },
+      { min: 4500, max: 4999.99, fee: 750 },
+      { min: 5000, max: 5499.99, fee: 775 },
+      { min: 5500, max: 5999.99, fee: 800 },
+      { min: 6000, max: 6499.99, fee: 825 },
+      { min: 6500, max: 6999.99, fee: 845 },
+      { min: 7000, max: 7499.99, fee: 880 },
+      { min: 7500, max: 7999.99, fee: 900 },
+      { min: 8000, max: 8499.99, fee: 925 },
+      { min: 8500, max: 8999.99, fee: 945 },
+      { min: 9000, max: 9999.99, fee: 945 },
+      { min: 10000, max: 10499.99, fee: 1000 },
+      { min: 10500, max: 10999.99, fee: 1000 },
+      { min: 11000, max: 11499.99, fee: 1000 },
+      { min: 11500, max: 11999.99, fee: 1000 },
+      { min: 12000, max: 12499.99, fee: 1000 },
+      { min: 12500, max: 14999.99, fee: 1000 },
+      { min: 15000, max: Infinity, fee: null }
+    ];
+
+    // Copart fixed fees (in USD)
+    const copartGateFee = 95;
+    function getCopartLiveBidFee(price) {
+      if (price < 100) return 0;
+      if (price < 500) return 50;
+      if (price < 1000) return 65;
+      if (price < 1500) return 85;
+      if (price < 2000) return 95;
+      if (price < 4000) return 110;
+      if (price < 6000) return 125;
+      if (price < 8000) return 145;
+      return 160;
+    }
+
+    // IAAI Fee Table (in USD)
+    const iaaiFeeTable = [
+      { min: 0, max: 99.99, fee: 1 },
+      { min: 100, max: 199.99, fee: 25 },
+      { min: 200, max: 299.99, fee: 60 },
+      { min: 300, max: 349.99, fee: 85 },
+      { min: 350, max: 399.99, fee: 100 },
+      { min: 400, max: 449.99, fee: 125 },
+      { min: 450, max: 499.99, fee: 135 },
+      { min: 500, max: 549.99, fee: 145 },
+      { min: 550, max: 599.99, fee: 155 },
+      { min: 600, max: 699.99, fee: 170 },
+      { min: 700, max: 799.99, fee: 195 },
+      { min: 800, max: 899.99, fee: 215 },
+      { min: 900, max: 999.99, fee: 230 },
+      { min: 1000, max: 1199.99, fee: 250 },
+      { min: 1200, max: 1299.99, fee: 270 },
+      { min: 1300, max: 1399.99, fee: 285 },
+      { min: 1400, max: 1499.99, fee: 300 },
+      { min: 1500, max: 1599.99, fee: 315 },
+      { min: 1600, max: 1699.99, fee: 330 },
+      { min: 1700, max: 1799.99, fee: 350 },
+      { min: 1800, max: 1999.99, fee: 370 },
+      { min: 2000, max: 2399.99, fee: 390 },
+      { min: 2400, max: 2499.99, fee: 425 },
+      { min: 2500, max: 2999.99, fee: 460 },
+      { min: 3000, max: 3499.99, fee: 505 },
+      { min: 3500, max: 3999.99, fee: 555 },
+      { min: 4000, max: 4499.99, fee: 600 },
+      { min: 4500, max: 4999.99, fee: 625 },
+      { min: 5000, max: 5499.99, fee: 650 },
+      { min: 5500, max: 5999.99, fee: 675 },
+      { min: 6000, max: 6499.99, fee: 700 },
+      { min: 6500, max: 6999.99, fee: 720 },
+      { min: 7000, max: 7499.99, fee: 755 },
+      { min: 7500, max: 7999.99, fee: 775 },
+      { min: 8000, max: 8499.99, fee: 800 },
+      { min: 8500, max: 9999.99, fee: 820 },
+      { min: 10000, max: 11499.99, fee: 850 },
+      { min: 11500, max: 11999.99, fee: 860 },
+      { min: 12000, max: 12499.99, fee: 875 },
+      { min: 12500, max: 14999.99, fee: 880 },
+      { min: 15000, max: Infinity, fee: null }
+    ];
+    // IAAI additional fixed fees (in USD)
+    const iaaiAdditionalFee = 95 + 15 + 20 + 35; // $130
+
+	function getIaaiLiveOnlineBidFee(price) {
+      if (price < 100) return 0;
+      if (price < 500) return 50;
+      if (price < 1000) return 65;
+      if (price < 1500) return 85;
+      if (price < 2000) return 95;
+      if (price < 4000) return 110;
+      if (price < 6000) return 125;
+      if (price < 8000) return 145;
+      return 160; // 8000+
+    }
+
+
+    /********* Helper Functions *********/
+    function getCopartSecuredFee(price) {
+      for (let range of copartSecuredFees) {
+        if (price >= range.min && price <= range.max) {
+          return range.fee === null ? price * 0.075 : range.fee;
+        }
+      }
+      return 0;
+    }
+
+    function getIAAIFee(price) {
+      for (let range of iaaiFeeTable) {
+        if (price >= range.min && price <= range.max) {
+          return range.fee === null ? price * 0.06 : range.fee;
+        }
+      }
+      return 0;
+    }
+
+    /********* Function to Populate Pickup Locations *********/
+    function populateLocations() {
+      const auction = document.getElementById("auction").value;
+      const locationSelect = document.getElementById("location");
+      locationSelect.innerHTML = "";
+      const options = Object.keys(localTransport[auction]);
+      for (let i = 0; i < options.length; i++) {
+        const opt = document.createElement("option");
+        opt.value = options[i];
+        opt.text = options[i];
+        locationSelect.appendChild(opt);
+      }
+      // Do not call calculateTotal() here so that outputs remain blank until the button is pressed.
+    }
+
+    /********* Main Calculation Function *********/
+function calculateTotal() {
+  // Retrieve inputs
+  const priceUSD = parseFloat(document.getElementById("price").value) || 0;
+  const auction = document.getElementById("auction").value;
+  const vehicle = document.querySelector('input[name="vehicle"]:checked').value;
+  const pickup = document.getElementById("location").value.trim();
+  const destination = document.getElementById("shipping").value;
+
+  // 1. Transporto priemonės kaina (in EUR)
+  const vehiclePriceEUR = priceUSD * rate;
+
+  // 2. Tralo mokestis (local transport fee, in USD converted to EUR)
+  let localFeeUSD = 0;
+  if (localTransport[auction][pickup]) {
+    localFeeUSD = (vehicle === "motorcycle"
+      ? localTransport[auction][pickup].motorcycle
+      : localTransport[auction][pickup].car);
+  }
+  let transportFeeEUR = localFeeUSD * rate;
+  if (vehicle === "truck") {
+    transportFeeEUR += 100;
+  }
+
+  // 3. Aukciono mokesčiai (in USD converted to EUR)
+  let auctionFeeUSD = 0;
+let additionalFeeUSD = 0;
+let auctionFeeEUR = 0;
+
+if (auction === "copart") {
+    const secured = getCopartSecuredFee(priceUSD);
+    const liveBid = getCopartLiveBidFee(priceUSD);
+    additionalFeeUSD = copartGateFee + liveBid;
+    auctionFeeUSD = secured + additionalFeeUSD;
+} else if (auction === "iaai") {
+    const saleFee = getIAAIFee(priceUSD);
+    const liveOnlineBid = getIaaiLiveOnlineBidFee(priceUSD);
+    additionalFeeUSD = iaaiAdditionalFee;
+    auctionFeeUSD = saleFee + additionalFeeUSD + liveOnlineBid;
+}
+
+// Convert auction fee to EUR
+auctionFeeEUR = auctionFeeUSD * rate;
+
+// Add extra fee based on auction type
+if (auction === "copart") {
+    auctionFeeEUR += 200;
+} else if (auction === "iaai") {
+    auctionFeeEUR += 250;
+}
+
+
+
+
+  // 4. Krovinių gabenimas jūra (Shipping Fee)
+ let yard = "";
+if (localTransport[auction][pickup]) {
+  yard = localTransport[auction][pickup].yard;
+}
+const shippingKey = yard + "_" + destination;
+let shipFeeUSD = 0;
+if (shippingMapping[shippingKey]) {
+  shipFeeUSD = (vehicle === "motorcycle"
+    ? shippingMapping[shippingKey].motorcycle
+    : shippingMapping[shippingKey].car);
+}
+const shippingFeeEUR = shipFeeUSD * rate;
+
+  // 5. Muitas / PVM: normally 33.1% of (vehicle price + auction fees + transport fee + shipping fee)
+  let vatFeeEUR = (vehiclePriceEUR + auctionFeeEUR + transportFeeEUR + shippingFeeEUR) * 0.331;
+  let vatDisplay = vatFeeEUR.toFixed(2) + "€";
+  // If destination is Rotterdam or Bremerhaven, VAT fees should be 0 and display as "-"
+  if (destination === "Rotterdam" || destination === "Bremerhaven") {
+    vatDisplay = "-";
+    vatFeeEUR = 0;
+  }
+
+  // 6. Total Sum (in EUR)
+  const totalEUR = vehiclePriceEUR + auctionFeeEUR + transportFeeEUR + shippingFeeEUR + vatFeeEUR + 250;
+
+  // Update outputs:
+  document.getElementById("vehiclePrice").value = vehiclePriceEUR.toFixed(2) + "€";
+  document.getElementById("transportFees").value = transportFeeEUR.toFixed(2) + "€";
+  document.getElementById("auctionFees").value = auctionFeeEUR.toFixed(2) + "€";
+
+  // Shipping Fees display:
+  let shippingDisplay = "";
+if (destination === "Rotterdam" || destination === "Bremerhaven")
+  if (shippingFeeEUR === 0) {
+    shippingDisplay = " - KREIPKITĖS Į VINAS";
+  } else {
+    shippingDisplay = shippingFeeEUR.toFixed(2) + "€";
+  }
+ else {
+  if (shippingFeeEUR === 0) {
+    shippingDisplay = " - KREIPKITĖS Į VINAS";
+  } else {
+    shippingDisplay = shippingFeeEUR.toFixed(2) + "€";
+  }
+}
+  document.getElementById("shippingFees").value = shippingDisplay;
+
+  document.getElementById("vatFees").value = vatDisplay;
+
+  let totalDisplay = totalEUR.toFixed(2) + "€";
+  if (destination === "Rotterdam" || destination === "Bremerhaven") {
+    totalDisplay += " + MUITAS";
+  }
+  document.getElementById("totalSum").value = totalDisplay;
+  document.getElementById("destination").innerText = destination;
+}
+
+
+    // Event listeners to populate pickup locations on auction change and on page load
+    document.getElementById("auction").addEventListener("change", populateLocations);
+    window.addEventListener("load", populateLocations);
+  </script>
+</body>
+</html>
