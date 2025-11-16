@@ -7,8 +7,6 @@ from fastapi_cache.backends.redis import RedisBackend
 from app.config import settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-print(BASE_DIR)
-
 def init_fastapi_cache(custom_redis_client = None):
     if not custom_redis_client:
         redis_client = redis.Redis.from_url(settings.REDIS_URL)
