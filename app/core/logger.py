@@ -59,7 +59,7 @@ class ConsoleLogger:
             if extra:
                 doc["extra"] = extra
 
-        print(json.dumps(doc, ensure_ascii=False))
+        print(json.dumps(doc, ensure_ascii=False), flush=True)
 
 
 @asynccontextmanager

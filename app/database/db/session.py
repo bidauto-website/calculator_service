@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
 
 from sqlalchemy import Engine, create_engine
@@ -16,7 +17,14 @@ else:
 
 engine: Engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
-engine_async: AsyncEngine = create_async_engine(SQLALCHEMY_ASYNC_DATABASE_URL, echo=False)
+engine_async: AsyncEngine = create_async_engine(
+    SQLALCHEMY_ASYNC_DATABASE_URL,
+    pool_size=20,
+    max_overflow=20,
+    pool_timeout=30,
+    pool_pre_ping=True,
+    echo=False
+)
 AsyncSessionLocal = async_sessionmaker(
     bind=engine_async,
     expire_on_commit=False,
@@ -26,5 +34,9 @@ AsyncSessionLocal = async_sessionmaker(
 async def get_async_db()-> AsyncGenerator[AsyncSession | Any, Any]:
     async with AsyncSessionLocal() as session:
         yield session
-        await session.close()
+
+@asynccontextmanager
+async def get_db_context():
+    async with AsyncSessionLocal() as session:
+        yield session
 

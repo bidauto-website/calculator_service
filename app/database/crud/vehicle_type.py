@@ -14,7 +14,7 @@ class VehicleTypeService(BaseService[VehicleType, VehicleTypeCreate, VehicleType
         super().__init__(VehicleType, session)
 
     async def get_by_auction_and_type(self, auction: AuctionEnum, vehicle_type: VehicleTypeEnum) -> VehicleType | None:
-        result = await self.session.execute(select(VehicleType).where(VehicleType.auction == auction, VehicleType.vehicle_type == vehicle_type))
+        result = await self.session.execute(select(VehicleType).where(VehicleType.auction == auction, VehicleType.vehicle_type == vehicle_type).limit(1))
         return result.scalar_one_or_none()
 
 

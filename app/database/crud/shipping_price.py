@@ -13,19 +13,6 @@ class ShippingPriceService(BaseService[ShippingPrice, ShippingPriceCreate, Shipp
     def __init__(self, session: AsyncSession):
         super().__init__(ShippingPrice, session)
 
-    async def get_by_terminal_and_vehicle_type(self, terminal: Terminal, vehicle_type: VehicleType) -> \
-    Sequence[ShippingPrice]:
-        result = await self.session.execute(
-            select(ShippingPrice)
-            .where(
-                and_(
-                    ShippingPrice.terminal_id == terminal.id,
-                    ShippingPrice.vehicle_type_id == vehicle_type.id
-                )
-            )
-        )
-        return result.scalars().all()
-
     async def get_by_destination_and_vehicle_type(self, destination: Destination, vehicle_type: VehicleType) -> \
     Sequence[ShippingPrice]:
         result = await self.session.execute(

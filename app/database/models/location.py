@@ -7,8 +7,6 @@ from app.database.models import Base
 
 if TYPE_CHECKING:
     from app.database.models.delivery_price import DeliveryPrice
-    from app.database.models.vehicle_type import VehicleType
-    from app.database.models.shipping_price import ShippingPrice
 
 
 class Location(Base):

@@ -31,7 +31,7 @@ class AdditionalFeeService(BaseService[AdditionalFee, AdditionalFeeCreate, Addit
                 AdditionalFee.live_bid_min <= price,
                 AdditionalFee.live_bid_max >= price
             )
-            .order_by(AdditionalFee.live_bid_min)
+            .order_by(AdditionalFee.live_bid_fee)
             .limit(1)
         )
         return result.scalar_one_or_none()

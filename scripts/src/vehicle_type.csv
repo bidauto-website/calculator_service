@@ -1,5 +1,6 @@
 id,auction,vehicle_type,specific_type
-1,IAAI,CAR,
-2,IAAI,MOTO,
-3,COPART,CAR,
-4,COPART,MOTO,
+1,COPART,CAR,""
+4,IAAI,MOTO,""
+2,IAAI,CAR,""
+3,COPART,MOTO,""
+5,"","",DEALER

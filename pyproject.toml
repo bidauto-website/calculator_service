@@ -1,5 +1,5 @@
 [project]
-name = "bidauto-calculator"
+name = "vinasltcalculator"
 version = "0.1.0"
 description = ""
 authors = [
@@ -22,9 +22,8 @@ dependencies = [
     "grpcio-health-checking (>=1.74.0,<2.0.0)",
     "psycopg2-binary (>=2.9.10,<3.0.0)",
     "asyncpg (>=0.30.0,<0.31.0)",
-    "AuthTools @ git+https://github.com/vinasLT/shared_auth.git@v0.1.8",
-    "greenlet (>=3.2.4,<4.0.0)",
-    "fastapi-pagination (>=0.15.0,<0.16.0)",
+    "grpcio-reflection (>=1.74.0,<2.0.0)",
+    "greenlet (>=3.2.4,<4.0.0)"
 ]
 
 
