@@ -1,20 +1,18 @@
 
 import grpc
-from fastapi import APIRouter, Depends, Path, Body, Query
+from fastapi import APIRouter, Depends, Path, Body
 from fastapi.params import Param
 from fastapi_cache import default_key_builder
 from fastapi_cache.decorator import cache
-from fastapi_pagination import Params
 from rfc9457 import NotFoundProblem
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi_pagination.ext.sqlalchemy import paginate
+
 from app.core.logger import logger
-from app.database.crud.location import LocationService
 from app.database.db.session import get_async_db
 from app.enums.auction import AuctionEnum
 from app.enums.vehicle_type import VehicleTypeEnum
-from app.rpc_client.auction_api import ApiRpcClient
-from app.schemas.calculator import CalculatorDataIn, CalculatorWithoutDetailsIn, LocationPage, GetLocationsIn
+from app.rpc_client_server.auction_api import ApiRpcClient
+from app.schemas.calculator import CalculatorDataIn, PriceIn
 from app.services.calculator.calculator_service import CalculatorService
 from app.services.calculator.exceptions import NotFoundError
 from app.services.calculator.types import Calculator
@@ -40,7 +38,7 @@ async def get_calculator(data: CalculatorDataIn = Body(...), db: AsyncSession = 
     except NotFoundError as e:
         raise NotFoundProblem(detail=e.message)
 
-@calculator_api_router.get(
+@calculator_api_router.post(
     "/{auction}/{lot_id}",
     response_model=Calculator,
     tags=["calculator"],
@@ -51,7 +49,7 @@ async def get_calculator(data: CalculatorDataIn = Body(...), db: AsyncSession = 
 async def get_calculator_by_lot(
         auction: AuctionEnum = Path(..., description='Auction'),
         lot_id: str = Path(..., description='Lot id'),
-        price: CalculatorWithoutDetailsIn = Param(...),
+        price: PriceIn = Body(...),
         db: AsyncSession = Depends(get_async_db)
 ):
     try:
@@ -84,11 +82,7 @@ async def get_calculator_by_lot(
     except NotFoundError as e:
         raise NotFoundProblem(detail=e.message)
 
-@cache(expire=60*5, key_builder=default_key_builder)
-@calculator_api_router.get("/locations", response_model=LocationPage, description='Get All Locations')
-async def get_locations(db: AsyncSession = Depends(get_async_db), params: Params = Depends(), data: GetLocationsIn = Depends()):
-    location_service = LocationService(db)
-    locations_stmt =  await location_service.get_with_search_auction(search=data.search, auction=data.auction, get_stmt=True)
-    return await paginate(db, locations_stmt, params)
+
+
 
 

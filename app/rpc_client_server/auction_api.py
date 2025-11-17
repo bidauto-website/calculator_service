@@ -4,11 +4,12 @@ import sys
 import grpc
 
 from app.config import settings
-from app.rpc_client.base_client import BaseRpcClient, T
+from app.rpc_client_server.base_client import BaseRpcClient, T
 
+# Ensure generated proto packages (auction, carfax, payment) are importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'gen', 'python'))
 
-from app.rpc_client.gen.python.auction.v1 import lot_pb2_grpc, lot_pb2
+from app.rpc_client_server.gen.python.auction.v1 import lot_pb2_grpc, lot_pb2
 
 
 class ApiRpcClient(BaseRpcClient[lot_pb2_grpc.LotServiceStub]):

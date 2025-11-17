@@ -7,10 +7,6 @@ class Environment(str, Enum):
     DEVELOPMENT = "development"
     PRODUCTION = "production"
 
-class Permissions(str, Enum):
-    EXCHANGE_RATE_WRITE = "calculator.exchange-rate:write"
-
-
 class Settings(BaseSettings):
     # Database
     DB_HOST: str = "localhost"
@@ -29,7 +25,8 @@ class Settings(BaseSettings):
     ENVIRONMENT: Environment = Environment.DEVELOPMENT
 
     # RPC
-    RPC_API_URL: str = "localhost:50051"
+    RPC_API_URL: str = "localhost:50052"
+    GRPC_SERVER_PORT: str = "50051"
 
     @property
     def enable_docs(self) -> bool:

@@ -1,20 +1,15 @@
 from pathlib import Path
 
-from fastapi import Query
-from fastapi_pagination import Page
-from fastapi_pagination.customization import CustomizedPage, UseParamsFields, UseFieldsAliases
-from pydantic import BaseModel
+import redis
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+
+from app.config import settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-print(BASE_DIR)
-
-
-def create_pagination_page(pydantic_model: type[BaseModel])-> type[Page[BaseModel]]:
-    return CustomizedPage[
-        Page[pydantic_model],
-        UseParamsFields(size=Query(5, ge=1, le=1000)),
-        UseFieldsAliases(
-            items="data",
-            total='count'
-        )
-    ]
+def init_fastapi_cache(custom_redis_client = None):
+    if not custom_redis_client:
+        redis_client = redis.Redis.from_url(settings.REDIS_URL)
+    else:
+        redis_client = custom_redis_client
+    FastAPICache.init(RedisBackend(redis_client), prefix="fastapi-cache")

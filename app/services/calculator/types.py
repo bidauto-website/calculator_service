@@ -33,11 +33,8 @@ class DefaultCalculator(BaseCalculator):
     internet_fee: int
 
 class EUCalculator(BaseCalculator):
-    totals_without_default: list[City]
     vats: VATs
     custom_agency: int = 0
-
-
 
 class CalculatorOut(BaseModel):
     calculator: DefaultCalculator
@@ -47,7 +44,6 @@ class CalculatorOut(BaseModel):
 class Calculator(BaseModel):
     calculator_in_dollars: CalculatorOut
     calculator_in_currency: CalculatorOut
-    destinations: list[str]
 
 
 

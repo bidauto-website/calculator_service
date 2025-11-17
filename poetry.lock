@@ -135,27 +135,6 @@ gssauth = ["gssapi ; platform_system != \"Windows\"", "sspilib ; platform_system
 test = ["distro (>=1.9.0,<1.10.0)", "flake8 (>=6.1,<7.0)", "flake8-pyi (>=24.1.0,<24.2.0)", "gssapi ; platform_system == \"Linux\"", "k5test ; platform_system == \"Linux\"", "mypy (>=1.8.0,<1.9.0)", "sspilib ; platform_system == \"Windows\"", "uvloop (>=0.15.3) ; platform_system != \"Windows\" and python_version < \"3.14.0\""]
 
 [[package]]
-name = "authtools"
-version = "0.1.8"
-description = "Shared auth library for FastAPI"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-fastapi = ">=0.101.0,<0.121.0"
-fastapi-problem = ">=0.11.5,<0.12.0"
-pydantic = ">=2.11.9,<3.0.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/vinasLT/shared_auth.git"
-reference = "v0.1.8"
-resolved_reference = "c46ad3a9a7979d4f45f42fbe64bb9d4b0d5c4f1c"
-
-[[package]]
 name = "click"
 version = "8.2.1"
 description = "Composable command line interface toolkit"
@@ -240,41 +219,6 @@ all = ["aiobotocore (>=2.13.1,<3.0.0)", "aiomcache (>=0.8.2,<0.9.0)", "redis (>=
 dynamodb = ["aiobotocore (>=2.13.1,<3.0.0)"]
 memcache = ["aiomcache (>=0.8.2,<0.9.0)"]
 redis = ["redis (>=4.2.0rc1,<5.0.0)"]
-
-[[package]]
-name = "fastapi-pagination"
-version = "0.15.0"
-description = "FastAPI pagination"
-optional = false
-python-versions = "<4.0,>=3.10"
-groups = ["main"]
-files = [
-    {file = "fastapi_pagination-0.15.0-py3-none-any.whl", hash = "sha256:ffef937e78903fcb6f356b8407ec1fb0620a06675087fa7d0c4e537a60aa0447"},
-    {file = "fastapi_pagination-0.15.0.tar.gz", hash = "sha256:11fe39cbe181ed3c18919b90faf6bfcbe40cb596aa9c52a98bbce85111a29a4f"},
-]
-
-[package.dependencies]
-fastapi = ">=0.93.0"
-pydantic = ">=1.9.1"
-typing-extensions = ">=4.8.0,<5"
-
-[package.extras]
-asyncpg = ["asyncpg (>=0.24.0)", "sqlalchemy (>=1.3.20)"]
-beanie = ["beanie (>=2.0.0)"]
-bunnet = ["bunnet (>=1.1.0,<2)"]
-databases = ["databases (>=0.6.0)"]
-django = ["databases (>=0.6.0)", "django (<6.0.0)"]
-elasticsearch = ["elasticsearch-dsl (>=8.13.0,<9)"]
-firestore = ["google-cloud-firestore (>=2.19.0,<3)"]
-mongoengine = ["mongoengine (>=0.23.1,<0.30.0)"]
-motor = ["motor (>=3.6.0,<4.0.0)"]
-odmantic = ["odmantic (>=1.0.2,<2)"]
-orm = ["databases (>=0.6.0)", "orm (>=0.3.1)"]
-piccolo = ["piccolo (>=0.89,<1.25)"]
-scylla-driver = ["scylla-driver (>=3.25.6,<4)"]
-sqlalchemy = ["sqlakeyset (>=2.0.1680321678,<3)", "sqlalchemy (>=1.3.20)"]
-sqlmodel = ["sqlakeyset (>=2.0.1680321678,<3)", "sqlmodel (>=0.0.22)"]
-tortoise = ["tortoise-orm (>=0.22.0)"]
 
 [[package]]
 name = "fastapi-problem"
@@ -437,6 +381,22 @@ groups = ["main"]
 files = [
     {file = "grpcio_health_checking-1.74.0-py3-none-any.whl", hash = "sha256:9a6e7bcdf16395105425753d6e3fe31f57cb6ab3f232282254b50f02cc63d9c7"},
     {file = "grpcio_health_checking-1.74.0.tar.gz", hash = "sha256:d6749451d4cef543c3f6260ae9a86c84b9ab02a92421cecae73a632e7fe920bf"},
+]
+
+[package.dependencies]
+grpcio = ">=1.74.0"
+protobuf = ">=6.31.1,<7.0.0"
+
+[[package]]
+name = "grpcio-reflection"
+version = "1.74.0"
+description = "Standard Protobuf Reflection Service for gRPC"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "grpcio_reflection-1.74.0-py3-none-any.whl", hash = "sha256:ad1c4e94185f6def18f298f40f719603118f59d646939bb827f7bc72400f9ba0"},
+    {file = "grpcio_reflection-1.74.0.tar.gz", hash = "sha256:c7327d2520dcdac209872ebf57774c3239646dad882e4abb4ad7bebccaca2c83"},
 ]
 
 [package.dependencies]
@@ -1067,14 +1027,14 @@ files = [
 
 [[package]]
 name = "pydantic"
-version = "2.11.9"
+version = "2.11.7"
 description = "Data validation using Python type hints"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "pydantic-2.11.9-py3-none-any.whl", hash = "sha256:c42dd626f5cfc1c6950ce6205ea58c93efa406da65f479dcb4029d5934857da2"},
-    {file = "pydantic-2.11.9.tar.gz", hash = "sha256:6b8ffda597a14812a7975c90b82a8a2e777d9257aba3453f973acd3c032a18e2"},
+    {file = "pydantic-2.11.7-py3-none-any.whl", hash = "sha256:dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b"},
+    {file = "pydantic-2.11.7.tar.gz", hash = "sha256:d989c3c6cb79469287b1569f7447a17848c998458d49ebe294e975b9baf0f0db"},
 ]
 
 [package.dependencies]
@@ -1570,4 +1530,4 @@ dev = ["black (>=19.3b0) ; python_version >= \"3.6\"", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0"
-content-hash = "1dc934663869567c979ae39b37760e7aff3039817fa4ccf2002370f467936f3e"
+content-hash = "27fefd1620870e9ca4c056e18b692cc579a7d5deca69923213bdf7d091aa912e"

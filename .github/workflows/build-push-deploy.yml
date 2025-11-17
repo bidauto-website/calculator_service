@@ -1,15 +1,9 @@
 name: Fast Multi-arch Pipeline
-
 on:
   push:
     branches: [ main, dev ]
   pull_request:
     branches: [ main ]
-
-env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bidauto_web_calculator_service
-  IMAGE_TAG: ${{ github.ref_name == 'main' && 'main' || 'dev' }}
-  CACHE_SCOPE: ${{ github.ref_name }}
 
 jobs:
   test:
@@ -43,7 +37,7 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          poetry run pytest || ([ $? -eq 5 ] && echo "No tests found - continuing" || exit $?)
+          poetry run pytest || ([ $? -eq 5 ] && echo "⚠️ No tests found - continuing anyway" || exit $?)
 
   build:
     needs: test
@@ -78,9 +72,9 @@ jobs:
           context: .
           file: Dockerfile
           platforms: ${{ matrix.platform }}
-          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache-${{ env.CACHE_SCOPE }}-${{ matrix.cache-tag }}
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache-${{ env.CACHE_SCOPE }}-${{ matrix.cache-tag }},mode=max
+          outputs: type=image,name=${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service,push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service:buildcache-${{ matrix.cache-tag }}
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service:buildcache-${{ matrix.cache-tag }},mode=max
 
       - name: Export digest
         run: |
@@ -119,19 +113,11 @@ jobs:
 
       - name: Create manifest list and push
         working-directory: /tmp/digests
-        env:
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: |
-          set -euo pipefail
-          images=""
-          for d in *; do
-            images="$images $IMAGE_NAME@sha256:$d"
-          done
           docker buildx imagetools create \
-            -t "$IMAGE_NAME:$IMAGE_TAG" \
-            -t "$IMAGE_NAME:${GITHUB_SHA}" \
-            $images
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service:latest \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service:${{ github.sha }} \
+            $(printf '${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service@sha256:%s ' *)
 
   deploy:
     needs: merge
@@ -146,7 +132,11 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             set -x
-            docker pull ${{ env.IMAGE_NAME }}:main
+            echo "🔁 Pulling latest Docker image..."
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bidauto_calculator_service:latest
+            
+            echo "📦 Composing up..."
             cd /srv/vinaslt/deploy_conf
             docker compose up -d --build
-            echo "Deployment complete"
+            
+            echo "✅ Deployment complete!"

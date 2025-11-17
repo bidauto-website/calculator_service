@@ -28,7 +28,6 @@ class FeeService(BaseService[Fee, FeeCreate, FeeUpdate]):
             .order_by(Fee.car_price_min)
             .limit(1)
         )
-        print(result)
         return result.scalar_one_or_none()
 
 
