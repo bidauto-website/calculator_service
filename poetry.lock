@@ -135,6 +135,27 @@ gssauth = ["gssapi ; platform_system != \"Windows\"", "sspilib ; platform_system
 test = ["distro (>=1.9.0,<1.10.0)", "flake8 (>=6.1,<7.0)", "flake8-pyi (>=24.1.0,<24.2.0)", "gssapi ; platform_system == \"Linux\"", "k5test ; platform_system == \"Linux\"", "mypy (>=1.8.0,<1.9.0)", "sspilib ; platform_system == \"Windows\"", "uvloop (>=0.15.3) ; platform_system != \"Windows\" and python_version < \"3.14.0\""]
 
 [[package]]
+name = "authtools"
+version = "0.1.8"
+description = "Shared auth library for FastAPI"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+fastapi = ">=0.101.0,<0.121.0"
+fastapi-problem = ">=0.11.5,<0.12.0"
+pydantic = ">=2.11.9,<3.0.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/vinasLT/shared_auth.git"
+reference = "v0.1.8"
+resolved_reference = "c46ad3a9a7979d4f45f42fbe64bb9d4b0d5c4f1c"
+
+[[package]]
 name = "click"
 version = "8.2.1"
 description = "Composable command line interface toolkit"
@@ -1027,14 +1048,14 @@ files = [
 
 [[package]]
 name = "pydantic"
-version = "2.11.7"
+version = "2.11.10"
 description = "Data validation using Python type hints"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "pydantic-2.11.7-py3-none-any.whl", hash = "sha256:dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b"},
-    {file = "pydantic-2.11.7.tar.gz", hash = "sha256:d989c3c6cb79469287b1569f7447a17848c998458d49ebe294e975b9baf0f0db"},
+    {file = "pydantic-2.11.10-py3-none-any.whl", hash = "sha256:802a655709d49bd004c31e865ef37da30b540786a46bfce02333e0e24b5fe29a"},
+    {file = "pydantic-2.11.10.tar.gz", hash = "sha256:dc280f0982fbda6c38fada4e476dc0a4f3aeaf9c6ad4c28df68a666ec3c61423"},
 ]
 
 [package.dependencies]
@@ -1530,4 +1551,4 @@ dev = ["black (>=19.3b0) ; python_version >= \"3.6\"", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0"
-content-hash = "27fefd1620870e9ca4c056e18b692cc579a7d5deca69923213bdf7d091aa912e"
+content-hash = "57b83cb366082cb3679d94c7eb14ead4d4205a75c2d4a0e1164d9f1d2bebb133"

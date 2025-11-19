@@ -23,7 +23,8 @@ dependencies = [
     "psycopg2-binary (>=2.9.10,<3.0.0)",
     "asyncpg (>=0.30.0,<0.31.0)",
     "grpcio-reflection (>=1.74.0,<2.0.0)",
-    "greenlet (>=3.2.4,<4.0.0)"
+    "greenlet (>=3.2.4,<4.0.0)",
+    "authtools @ git+https://github.com/vinasLT/shared_auth.git@v0.1.8"
 ]
 
 

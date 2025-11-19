@@ -11,6 +11,7 @@ from grpc_health.v1 import health_pb2_grpc, health_pb2
 from grpc_reflection.v1alpha import reflection
 
 from app.rpc_client_server.calulator_rpc import CalculatorRpc
+from app.rpc_client_server.detailed_info_rpc import DetailedInfoRpc
 from app.rpc_client_server.gen.python.calculator.v1 import calculator_pb2, calculator_pb2_grpc
 from app.rpc_client_server.health import HealthCheckServicer
 
@@ -34,12 +35,14 @@ class GracefulServer:
         self.server.add_insecure_port(listen_addr)
 
         calculator_pb2_grpc.add_CalculatorServiceServicer_to_server(CalculatorRpc(), self.server)
+        calculator_pb2_grpc.add_DetailedInfoServiceServicer_to_server(DetailedInfoRpc(), self.server)
         health_pb2_grpc.add_HealthServicer_to_server(HealthCheckServicer(), self.server)
 
         if settings.ENVIRONMENT == Environment.DEVELOPMENT:
             try:
                 service_names = [
                     calculator_pb2.DESCRIPTOR.services_by_name['CalculatorService'].full_name,
+                    calculator_pb2.DESCRIPTOR.services_by_name['DetailedInfoService'].full_name,
                     health_pb2.DESCRIPTOR.services_by_name['Health'].full_name,
                     reflection.SERVICE_NAME,
                 ]

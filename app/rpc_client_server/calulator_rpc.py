@@ -4,7 +4,11 @@ from typing import TYPE_CHECKING
 import grpc
 
 from app.core.logger import logger
+from app.database.crud.delivery_price import DeliveryPriceService
+from app.database.crud.destination import DestinationService
+from app.database.crud.vehicle_type import VehicleTypeService
 from app.database.db.session import get_db_context
+from app.database.models import Location, Destination, FeeType
 from app.enums.auction import AuctionEnum
 from app.enums.fee_type import FeeTypeEnum
 from app.enums.vehicle_type import VehicleTypeEnum
@@ -101,7 +105,7 @@ class CalculatorRpc(calculator_pb2_grpc.CalculatorServiceServicer):
             logger.error(f"Error creating CalculatorOut: {e}", exc_info=True)
             raise
 
-    async def _calculate_and_respond(self, params, context, response_class):
+    async def _calculate(self, params, context):
         logger.info(f"Starting calculation with params: {params}")
         try:
             async with get_db_context() as db:
@@ -111,38 +115,51 @@ class CalculatorRpc(calculator_pb2_grpc.CalculatorServiceServicer):
                 result = await calculator_service.calculate()
                 logger.info("Calculation completed successfully")
 
-                response = response_class(
-                    data=self._create_calculator_out(result.calculator_in_dollars),
-                    message='Success',
-                    success=True,
-                )
-                logger.debug("Response created successfully")
-                return response
+                calculator_out = self._create_calculator_out(result.calculator_in_dollars)
+                logger.debug("CalculatorOut created successfully")
+                return calculator_out, None
         except NotFoundError as e:
             logger.warning(f"Not found error: {e.message}")
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details(e.message)
-            return response_class(
-                message=e.message,
-                success=False
-            )
+            return None, e.message
         except ValueError as e:
             logger.error(f"Validation error: {e}")
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             context.set_details(str(e))
-            return response_class(
-                message=str(e),
-                success=False
-            )
+            return None, str(e)
         except Exception as e:
 
             logger.exception(f"Unexpected error in calculation: {e}", )
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("Internal server error during calculation")
+            return None, "Internal server error"
+
+    async def _calculate_and_respond(self, params, context, response_class):
+        calculator_out, error_message = await self._calculate(params, context)
+        if calculator_out is None:
             return response_class(
-                message="Internal server error",
+                message=error_message or "Internal server error",
                 success=False
             )
+
+        return response_class(
+            data=calculator_out,
+            message='Success',
+            success=True,
+        )
+
+    @staticmethod
+    async def _get_entity_or_set_not_found(db, model, obj_id: int, entity_name: str, context):
+        entity = await db.get(model, obj_id)
+        if entity:
+            return entity
+
+        message = f"{entity_name} {obj_id} not found"
+        logger.warning(message)
+        context.set_code(grpc.StatusCode.NOT_FOUND)
+        context.set_details(message)
+        return None
 
     def _safe_enum_conversion(self, value, enum_class, field_name: str):
         logger.debug(f"Converting {field_name} value '{value}' to {enum_class.__name__}")
@@ -206,6 +223,151 @@ class CalculatorRpc(calculator_pb2_grpc.CalculatorServiceServicer):
                 message="Internal server error",
                 success=False
             )
+
+    async def GetCalculatorWithIds(self, request: calculator_pb2.GetCalculatorWithIdsRequest, context):
+        logger.info(
+            f"GetCalculatorWithIds called with price: {request.price}, auction: {request.auction}, location_id: {request.location_id}")
+        try:
+            if request.price < -1:
+                logger.warning(f"Invalid price provided: {request.price}")
+                raise ValueError("Price must be greater than -1")
+
+            if not request.HasField("location_id") or request.location_id <= 0:
+                logger.warning("Location ID not provided in request")
+                raise ValueError("location_id is required")
+
+            if not request.vehicle_type:
+                logger.warning("Vehicle type not provided in request")
+                raise ValueError("vehicle_type is required")
+
+            auction_enum = self._safe_enum_conversion(request.auction.upper(), AuctionEnum, "auction")
+            vehicle_type_enum = self._safe_enum_conversion(request.vehicle_type, VehicleTypeEnum, "vehicle_type")
+
+            location_message = None
+            destination_name = ""
+            destination_value = None
+            fee_type_enum_value = None
+            fee_type_message = None
+            terminal_name = ""
+            location_name = ""
+
+            try:
+                async with get_db_context() as db:
+                    destination_service = DestinationService(db)
+
+                    location = await self._get_entity_or_set_not_found(
+                        db,
+                        Location,
+                        request.location_id,
+                        "Location",
+                        context,
+                    )
+                    if not location:
+                        return calculator_pb2.GetCalculatorWithIdsResponse()
+
+                    location_name = location.name or ""
+                    location_message = calculator_pb2.Location(
+                        name=location.name or "",
+                        city=location.city or "",
+                        state=location.state or "",
+                        postal_code=location.postal_code or "",
+                        email=location.email or "",
+                    )
+
+                    if request.HasField("destination_id") and request.destination_id > 0:
+                        destination = await self._get_entity_or_set_not_found(
+                            db,
+                            Destination,
+                            request.destination_id,
+                            "Destination",
+                            context,
+                        )
+                        if not destination:
+                            return calculator_pb2.GetCalculatorWithIdsResponse()
+                    else:
+                        destination = await destination_service.get_default()
+                        if not destination:
+                            logger.error("Default destination not found")
+                            context.set_code(grpc.StatusCode.NOT_FOUND)
+                            context.set_details("Default destination not found")
+                            return calculator_pb2.GetCalculatorWithIdsResponse()
+
+                    destination_name = destination.name or ""
+                    destination_value = destination.name or ""
+
+                    if request.HasField("fee_type_id") and request.fee_type_id > 0:
+                        fee_type = await self._get_entity_or_set_not_found(
+                            db,
+                            FeeType,
+                            request.fee_type_id,
+                            "Fee type",
+                            context,
+                        )
+                        if not fee_type:
+                            return calculator_pb2.GetCalculatorWithIdsResponse()
+                        fee_type_enum_value = fee_type.fee_type
+                        fee_type_message = calculator_pb2.FeeType(
+                            auction=fee_type.auction.value if fee_type.auction else "",
+                            fee_type=fee_type.fee_type.value if fee_type.fee_type else "",
+                        )
+
+                    vehicle_type_service = VehicleTypeService(db)
+                    vehicle_type_model = await vehicle_type_service.get_by_auction_and_type(auction_enum, vehicle_type_enum)
+                    if not vehicle_type_model:
+                        message = "Vehicle type not found"
+                        logger.warning(message)
+                        context.set_code(grpc.StatusCode.NOT_FOUND)
+                        context.set_details(message)
+                        return calculator_pb2.GetCalculatorWithIdsResponse()
+
+                    delivery_price_service = DeliveryPriceService(db)
+                    delivery_prices = await delivery_price_service.get_by_terminal_location_vehicle_type(
+                        location=location,
+                        vehicle_type=vehicle_type_model,
+                    )
+                    if delivery_prices:
+                        terminal_name = delivery_prices[0].terminal.name or ""
+            except Exception as e:
+                logger.error(f"Error preparing data for GetCalculatorWithIds: {e}", exc_info=True)
+                context.set_code(grpc.StatusCode.INTERNAL)
+                context.set_details("Failed to prepare calculator data")
+                return calculator_pb2.GetCalculatorWithIdsResponse()
+
+            params = dict(
+                price=request.price,
+                auction=auction_enum,
+                fee_type=fee_type_enum_value,
+                location=location_name,
+                vehicle_type=vehicle_type_enum,
+                destination=destination_value,
+            )
+
+            calculator_out, error_message = await self._calculate(params, context)
+            if calculator_out is None:
+                return calculator_pb2.GetCalculatorWithIdsResponse()
+
+            response_kwargs = dict(
+                calculator=calculator_out,
+                location=location_message,
+                terminal_name=terminal_name,
+                destination_name=destination_name,
+            )
+
+            if fee_type_message:
+                response_kwargs["fee_type"] = fee_type_message
+
+            return calculator_pb2.GetCalculatorWithIdsResponse(**response_kwargs)
+
+        except ValueError as e:
+            logger.warning(f"Validation error in GetCalculatorWithIds: {e}")
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            context.set_details(str(e))
+            return calculator_pb2.GetCalculatorWithIdsResponse()
+        except Exception as e:
+            logger.error(f"Unexpected error in GetCalculatorWithIds: {e}", exc_info=True)
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Internal server error")
+            return calculator_pb2.GetCalculatorWithIdsResponse()
 
     async def GetCalculatorWithDataBatch(self, request, context):
         logger.info(f"GetCalculatorWithDataBatch called with {len(request.data)} requests")

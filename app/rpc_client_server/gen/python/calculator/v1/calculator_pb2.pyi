@@ -5,6 +5,66 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class GetDetailedFeeTypeRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class GetDetailedFeeTypeResponse(_message.Message):
+    __slots__ = ("auction", "fee_type")
+    AUCTION_FIELD_NUMBER: _ClassVar[int]
+    FEE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    auction: str
+    fee_type: str
+    def __init__(self, auction: _Optional[str] = ..., fee_type: _Optional[str] = ...) -> None: ...
+
+class GetDetailedLocationRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class GetDetailedLocationResponse(_message.Message):
+    __slots__ = ("name", "city", "state", "postal_code", "email")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CITY_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    POSTAL_CODE_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    city: str
+    state: str
+    postal_code: str
+    email: str
+    def __init__(self, name: _Optional[str] = ..., city: _Optional[str] = ..., state: _Optional[str] = ..., postal_code: _Optional[str] = ..., email: _Optional[str] = ...) -> None: ...
+
+class GetDetailedTerminalRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class GetDetailedTerminalResponse(_message.Message):
+    __slots__ = ("name",)
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    def __init__(self, name: _Optional[str] = ...) -> None: ...
+
+class GetDetailedDestinationRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class GetDetailedDestinationResponse(_message.Message):
+    __slots__ = ("name", "is_default")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    IS_DEFAULT_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    is_default: bool
+    def __init__(self, name: _Optional[str] = ..., is_default: bool = ...) -> None: ...
+
 class GetCalculatorWithDataRequest(_message.Message):
     __slots__ = ("price", "auction", "fee_type", "vehicle_type", "destination", "location")
     PRICE_FIELD_NUMBER: _ClassVar[int]
@@ -20,6 +80,22 @@ class GetCalculatorWithDataRequest(_message.Message):
     destination: str
     location: str
     def __init__(self, price: _Optional[int] = ..., auction: _Optional[str] = ..., fee_type: _Optional[str] = ..., vehicle_type: _Optional[str] = ..., destination: _Optional[str] = ..., location: _Optional[str] = ...) -> None: ...
+
+class GetCalculatorWithIdsRequest(_message.Message):
+    __slots__ = ("price", "auction", "fee_type_id", "vehicle_type", "destination_id", "location_id")
+    PRICE_FIELD_NUMBER: _ClassVar[int]
+    AUCTION_FIELD_NUMBER: _ClassVar[int]
+    FEE_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    VEHICLE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    DESTINATION_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    price: int
+    auction: str
+    fee_type_id: int
+    vehicle_type: str
+    destination_id: int
+    location_id: int
+    def __init__(self, price: _Optional[int] = ..., auction: _Optional[str] = ..., fee_type_id: _Optional[int] = ..., vehicle_type: _Optional[str] = ..., destination_id: _Optional[int] = ..., location_id: _Optional[int] = ...) -> None: ...
 
 class GetCalculatorBatchRequest(_message.Message):
     __slots__ = ("data", "lot_id")
@@ -54,6 +130,42 @@ class GetCalculatorWithDataResponse(_message.Message):
     message: str
     success: bool
     def __init__(self, data: _Optional[_Union[CalculatorOut, _Mapping]] = ..., message: _Optional[str] = ..., success: bool = ...) -> None: ...
+
+class GetCalculatorWithIdsResponse(_message.Message):
+    __slots__ = ("calculator", "location", "terminal_name", "destination_name", "fee_type")
+    CALCULATOR_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
+    TERMINAL_NAME_FIELD_NUMBER: _ClassVar[int]
+    DESTINATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    FEE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    calculator: CalculatorOut
+    location: Location
+    terminal_name: str
+    destination_name: str
+    fee_type: FeeType
+    def __init__(self, calculator: _Optional[_Union[CalculatorOut, _Mapping]] = ..., location: _Optional[_Union[Location, _Mapping]] = ..., terminal_name: _Optional[str] = ..., destination_name: _Optional[str] = ..., fee_type: _Optional[_Union[FeeType, _Mapping]] = ...) -> None: ...
+
+class Location(_message.Message):
+    __slots__ = ("name", "city", "state", "postal_code", "email")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CITY_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    POSTAL_CODE_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    city: str
+    state: str
+    postal_code: str
+    email: str
+    def __init__(self, name: _Optional[str] = ..., city: _Optional[str] = ..., state: _Optional[str] = ..., postal_code: _Optional[str] = ..., email: _Optional[str] = ...) -> None: ...
+
+class FeeType(_message.Message):
+    __slots__ = ("auction", "fee_type")
+    AUCTION_FIELD_NUMBER: _ClassVar[int]
+    FEE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    auction: str
+    fee_type: str
+    def __init__(self, auction: _Optional[str] = ..., fee_type: _Optional[str] = ...) -> None: ...
 
 class GetCalculatorWithoutDataResponse(_message.Message):
     __slots__ = ("data", "message", "success")

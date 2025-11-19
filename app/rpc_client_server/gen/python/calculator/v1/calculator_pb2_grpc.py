@@ -29,6 +29,11 @@ class CalculatorServiceStub(object):
                 request_serializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithoutDataRequest.SerializeToString,
                 response_deserializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithoutDataResponse.FromString,
                 _registered_method=True)
+        self.GetCalculatorWithIds = channel.unary_unary(
+                '/calculator.v1.CalculatorService/GetCalculatorWithIds',
+                request_serializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithIdsRequest.SerializeToString,
+                response_deserializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithIdsResponse.FromString,
+                _registered_method=True)
 
 
 class CalculatorServiceServicer(object):
@@ -52,6 +57,12 @@ class CalculatorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetCalculatorWithIds(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_CalculatorServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -69,6 +80,11 @@ def add_CalculatorServiceServicer_to_server(servicer, server):
                     servicer.GetCalculatorWithoutData,
                     request_deserializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithoutDataRequest.FromString,
                     response_serializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithoutDataResponse.SerializeToString,
+            ),
+            'GetCalculatorWithIds': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetCalculatorWithIds,
+                    request_deserializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithIdsRequest.FromString,
+                    response_serializer=calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithIdsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -152,6 +168,234 @@ class CalculatorService(object):
             '/calculator.v1.CalculatorService/GetCalculatorWithoutData',
             calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithoutDataRequest.SerializeToString,
             calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithoutDataResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetCalculatorWithIds(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/calculator.v1.CalculatorService/GetCalculatorWithIds',
+            calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithIdsRequest.SerializeToString,
+            calculator_dot_v1_dot_calculator__pb2.GetCalculatorWithIdsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class DetailedInfoServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetDetailedLocation = channel.unary_unary(
+                '/calculator.v1.DetailedInfoService/GetDetailedLocation',
+                request_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedLocationRequest.SerializeToString,
+                response_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedLocationResponse.FromString,
+                _registered_method=True)
+        self.GetDetailedTerminal = channel.unary_unary(
+                '/calculator.v1.DetailedInfoService/GetDetailedTerminal',
+                request_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedTerminalRequest.SerializeToString,
+                response_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedTerminalResponse.FromString,
+                _registered_method=True)
+        self.GetDetailedDestination = channel.unary_unary(
+                '/calculator.v1.DetailedInfoService/GetDetailedDestination',
+                request_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedDestinationRequest.SerializeToString,
+                response_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedDestinationResponse.FromString,
+                _registered_method=True)
+        self.GetDetailedFeeType = channel.unary_unary(
+                '/calculator.v1.DetailedInfoService/GetDetailedFeeType',
+                request_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedFeeTypeRequest.SerializeToString,
+                response_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedFeeTypeResponse.FromString,
+                _registered_method=True)
+
+
+class DetailedInfoServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetDetailedLocation(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDetailedTerminal(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDetailedDestination(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDetailedFeeType(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_DetailedInfoServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetDetailedLocation': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDetailedLocation,
+                    request_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedLocationRequest.FromString,
+                    response_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedLocationResponse.SerializeToString,
+            ),
+            'GetDetailedTerminal': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDetailedTerminal,
+                    request_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedTerminalRequest.FromString,
+                    response_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedTerminalResponse.SerializeToString,
+            ),
+            'GetDetailedDestination': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDetailedDestination,
+                    request_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedDestinationRequest.FromString,
+                    response_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedDestinationResponse.SerializeToString,
+            ),
+            'GetDetailedFeeType': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDetailedFeeType,
+                    request_deserializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedFeeTypeRequest.FromString,
+                    response_serializer=calculator_dot_v1_dot_calculator__pb2.GetDetailedFeeTypeResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'calculator.v1.DetailedInfoService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('calculator.v1.DetailedInfoService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class DetailedInfoService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetDetailedLocation(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/calculator.v1.DetailedInfoService/GetDetailedLocation',
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedLocationRequest.SerializeToString,
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedLocationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDetailedTerminal(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/calculator.v1.DetailedInfoService/GetDetailedTerminal',
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedTerminalRequest.SerializeToString,
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedTerminalResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDetailedDestination(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/calculator.v1.DetailedInfoService/GetDetailedDestination',
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedDestinationRequest.SerializeToString,
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedDestinationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDetailedFeeType(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/calculator.v1.DetailedInfoService/GetDetailedFeeType',
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedFeeTypeRequest.SerializeToString,
+            calculator_dot_v1_dot_calculator__pb2.GetDetailedFeeTypeResponse.FromString,
             options,
             channel_credentials,
             insecure,
